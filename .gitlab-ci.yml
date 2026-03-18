@@ -1,0 +1,53 @@
+image: node:20-alpine
+
+stages:
+  - build
+  - release
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+build:
+  stage: build
+  script:
+    - npm ci
+    - npm run build
+  artifacts:
+    name: "ttx-character-cards-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - main.js
+      - manifest.json
+      - styles.css
+    expire_in: 30 days
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_TAG =~ /^v/'
+
+release:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs:
+    - job: build
+      artifacts: true
+  script:
+    - echo "Creating release ${CI_COMMIT_TAG}"
+  release:
+    name: "TTX Character Cards ${CI_COMMIT_TAG}"
+    description: |
+      Obsidian plugin for TTX participant and scenario stat blocks.
+      
+      ## Install
+      Download the zip, extract into your vault's `.obsidian/plugins/ttx-character-cards/` folder.
+    tag_name: ${CI_COMMIT_TAG}
+    assets:
+      links:
+        - name: "main.js"
+          url: "${CI_PROJECT_URL}/-/jobs/artifacts/${CI_COMMIT_TAG}/raw/main.js?job=build"
+        - name: "manifest.json"
+          url: "${CI_PROJECT_URL}/-/jobs/artifacts/${CI_COMMIT_TAG}/raw/manifest.json?job=build"
+        - name: "styles.css"
+          url: "${CI_PROJECT_URL}/-/jobs/artifacts/${CI_COMMIT_TAG}/raw/styles.css?job=build"
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v/'

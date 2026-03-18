@@ -1,11 +1,10 @@
 {
-    "id": "obsidian-5e-statblocks",
-    "name": "Fantasy Statblocks",
-    "version": "4.10.3",
-    "description": "Create Fantasy Statblocks in Obsidian.md",
-    "minAppVersion": "0.12.0",
-    "author": "Jeremy Valentine",
-    "authorUrl": "",
-    "fundingUrl": "https://www.buymeacoffee.com/valentine195",
+    "id": "ttx-character-cards",
+    "name": "TTX Character Cards",
+    "version": "1.0.0",
+    "minAppVersion": "0.15.0",
+    "author": "Martin Scholz (golodhrim)",
+    "description": "Character card stat blocks for TTX participants and scenarios. Fork of javalent/fantasy-statblocks.",
+    "authorUrl": "https://gitlab.com/golodhrim",
     "isDesktopOnly": false
 }

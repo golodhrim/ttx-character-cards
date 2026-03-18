@@ -65,7 +65,7 @@
         if (
             await confirmWithModal(
                 plugin.app,
-                `Are you sure you want to delete ${$filtered.length} creature${$filtered.length === 1 ? "" : "s"}?`
+                `Are you sure you want to delete ${$filtered.length} participant${$filtered.length === 1 ? "" : "s"}?`
             )
         ) {
             await plugin.deleteMonsters(...$filtered.map((m) => m.name));
@@ -90,7 +90,7 @@
     >
         <Filters on:remove={() => remove()} />
         <div class="setting-item-description">
-            {$filtered.length ? $filtered.length : "No"} creature{$filtered.length ===
+            {$filtered.length ? $filtered.length : "No"} participant{$filtered.length ===
             1
                 ? ""
                 : "s"}

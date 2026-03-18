@@ -517,7 +517,7 @@ class BasicModal<I extends BasicItem> extends EditorEnabledModal<I> {
     buildProperties(el: HTMLDivElement) {
         el.empty();
         const block = this.block;
-        new Setting(el).setName("Link Monster Property").addText((t) =>
+        new Setting(el).setName("Link Participant Property").addText((t) =>
             t.setValue(block.properties[0]).onChange((v) => {
                 block.properties[0] = v;
             })
@@ -843,7 +843,7 @@ class SubheadingModal extends BasicModal<SubHeadingItem> {
         let tempProp = "";
         new Setting(container)
             .setHeading()
-            .setName("Link Monster Properties")
+            .setName("Link Participant Properties")
             .addText((t) =>
                 t
                     .setPlaceholder("property")
@@ -980,7 +980,7 @@ class TraitsModal extends MarkdownEnabledModal<TraitsItem> {
         super.buildProperties(el);
         super.addPropertyAsCssClassToggleSetting(el);
         new Setting(el)
-            .setName("Use Monster Property for Heading")
+            .setName("Use Participant Property for Heading")
             .setDesc(
                 "The Section heading will be set to the value of the specified property."
             )
@@ -1086,7 +1086,7 @@ class TextModal extends MarkdownEnabledModal<TextItem> {
     buildProperties(el: HTMLDivElement): void {
         super.buildProperties(el);
         new Setting(el)
-            .setName("Use Monster Property for Heading")
+            .setName("Use Participant Property for Heading")
             .setDesc(
                 "The Section heading will be set to the value of the specified property."
             )

@@ -35,7 +35,7 @@
 
 <div class="container">
     <div class="controls">
-        <Search filter={NameFilter} placeholder={"Search Creatures"} />
+        <Search filter={NameFilter} placeholder={"Search Participants"} />
         <div class="filter-button" on:click={() => (open = !open)}>
             <div use:filter />
             <div class="filter-number">{$ActiveFilters}</div>
@@ -45,7 +45,7 @@
         <div
             use:deleteIcon
             on:click={() => dispatch("remove")}
-            aria-label="Delete filtered creatures"
+            aria-label="Delete filtered participants"
         />
     </div>
     {#if open}

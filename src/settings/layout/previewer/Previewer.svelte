@@ -48,7 +48,7 @@
     });
     const search = (node: HTMLElement) => {
         const search = new SearchComponent(node).setPlaceholder(
-            "Find a creature"
+            "Find a participant"
         );
         const suggester = new MonsterSuggestionModal(
             plugin.app,

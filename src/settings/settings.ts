@@ -229,16 +229,16 @@ export default class StatblockSettingTab extends PluginSettingTab {
         );
         new Setting(additionalContainer).setHeading().setName("Note Parsing");
         new Setting(additionalContainer)
-            .setName("Automatically Parse Frontmatter for Creatures")
+            .setName("Automatically Parse Frontmatter for Participants")
             .setDesc(
                 createFragment((e) => {
                     e.createSpan({
-                        text: "The plugin will watch the vault for creatures defined in note frontmatter."
+                        text: "The plugin will watch the vault for participants defined in note frontmatter."
                     });
                     e.createEl("br");
                     e.createEl("br");
                     e.createSpan({
-                        text: `The "Parse Frontmatter for Creatures" command can also be used.`
+                        text: `The "Parse Frontmatter for Participants" command can also be used.`
                     });
                 })
             )
@@ -338,7 +338,7 @@ export default class StatblockSettingTab extends PluginSettingTab {
             .appendChild(
                 createFragment((el) => {
                     el.createSpan({
-                        text: "New statblock layouts can be created and managed here. A specific layout can be used for a creature using the "
+                        text: "New statblock layouts can be created and managed here. A specific layout can be used for a participant using the "
                     });
                     el.createEl("code", { text: "layout" });
                     el.createSpan({ text: " parameter." });

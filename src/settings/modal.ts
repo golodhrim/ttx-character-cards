@@ -27,7 +27,7 @@ export class EditMonsterModal extends FantasyStatblockModal {
         });
         this._instance.$on("save", async ({ detail }: { detail: Monster }) => {
             if (!detail.name) {
-                new Notice("Creatures must be given a name.");
+                new Notice("Participants must be given a name.");
                 return;
             }
             await this.plugin.updateMonster(this.monster as Monster, detail);

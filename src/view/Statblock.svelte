@@ -109,7 +109,7 @@
     menu.addItem((item) =>
         item
             .setIcon("save")
-            .setTitle("Save to Bestiary")
+            .setTitle("Save to Participants")
             .setDisabled(!canSave)
             .onClick(() => dispatch("save"))
     );
@@ -119,7 +119,7 @@
             .onClick(async () => {
                 try {
                     await navigator.clipboard.writeText(stringifyYaml(monster));
-                    new Notice("Creature YAML copied to clipboard");
+                    new Notice("Participant YAML copied to clipboard");
                 } catch (e: unknown) {
                     new Notice(
                         `There was an issue copying the yaml:\n\n${(e as Error).message}`

@@ -38,7 +38,7 @@
                     } catch (e) {
                         console.error(e);
                         new Notice(
-                            `There was an error saving the creaturen\n\n${e.message}`
+                            `There was an error saving the participant\n\n${e.message}`
                         );
                         return;
                     }
@@ -75,7 +75,7 @@
 </script>
 
 <div class="edit-monster-modal">
-    <h2>Edit Monster</h2>
+    <h2>Edit Participant</h2>
     <div class="top-level">
         <div class="json">
             <div

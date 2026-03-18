@@ -46,7 +46,7 @@ export default class StatblockSettingTab extends PluginSettingTab {
 
             containerEl.addClass("statblock-settings");
 
-            containerEl.createEl("h2", { text: "Fantasy Statblocks Settings" });
+            containerEl.createEl("h2", { text: "TTX Character Cards Settings" });
 
             this.generateTopSettings(containerEl.createDiv());
             this.generateParseSettings(containerEl.createDiv());
@@ -69,7 +69,7 @@ export default class StatblockSettingTab extends PluginSettingTab {
         } catch (e) {
             console.error(e);
             new Notice(
-                "There was an error displaying the settings tab for 5e Statblocks."
+                "There was an error displaying the TTX Character Cards settings tab."
             );
         }
     }
@@ -220,27 +220,7 @@ export default class StatblockSettingTab extends PluginSettingTab {
                         await this.plugin.saveSettings();
                     })
             );
-        new Setting(container)
-            .setName("Enable 5e SRD")
-            .setDesc(
-                createFragment((e) => {
-                    e.createSpan({
-                        text: "Use the Dungeons & Dragons 5th Edition System Reference Document monsters."
-                    });
-                })
-            )
-            .addToggle((t) =>
-                t
-                    .setValue(!this.plugin.settings.disableSRD)
-                    .onChange(async (v) => {
-                        this.plugin.settings.disableSRD = !v;
-                        await this.plugin.saveSettings();
-                        this.plugin.app.workspace.trigger(
-                            "fantasy-statblocks:srd-change",
-                            v
-                        );
-                    })
-            );
+        // SRD disabled for TTX — no D&D bestiary content
     }
     generateParseSettings(containerEl: HTMLDivElement) {
         containerEl.empty();
@@ -291,7 +271,7 @@ export default class StatblockSettingTab extends PluginSettingTab {
             );
         let path: string;
         new Setting(additionalContainer)
-            .setName("Bestiary Folder")
+            .setName("Character Folder")
             .setDesc(
                 "The plugin will only parse notes inside these folders and their children."
             )
@@ -756,249 +736,27 @@ export default class StatblockSettingTab extends PluginSettingTab {
         containerEl.empty();
         new Setting(containerEl)
             .setHeading()
-            .setName("Import Homebrew Creatures");
+            .setName("Import Participants");
         const importSettingsContainer = containerEl.createDiv(
             "statblock-additional-container"
         );
 
         new Setting(importSettingsContainer).setDesc(
-            "Import creatures from creature files. Monsters are stored by name, so only the last creature by that name will be saved. This is destructive - any saved creature will be overwritten."
+            "Import participant data from JSON files. Participants are stored by name — importing a name that already exists will overwrite the existing entry."
         );
 
         const importAdditional =
             importSettingsContainer.createDiv("additional");
-        const importAppFile = new Setting(importAdditional)
-            .setName("Import DnDAppFile")
-            .setDesc("Only import content that you own.");
-        const inputAppFile = createEl("input", {
-            attr: {
-                type: "file",
-                name: "dndappfile",
-                accept: ".xml",
-                multiple: true
-            }
-        });
-
-        inputAppFile.onchange = async () => {
-            const { files } = inputAppFile;
-            if (!files?.length) return;
-            try {
-                const { files } = inputAppFile;
-                if (!files?.length) return;
-                const monsters = await this.importer.import(files, "appfile");
-                if (monsters && monsters.length) {
-                    await this.plugin.saveMonsters(monsters);
-                }
-                this.display();
-            } catch (e) {}
-        };
-
-        importAppFile.addButton((b) => {
-            b.setButtonText("Choose File(s)").setTooltip(
-                "Import DnDAppFile Data"
-            );
-            b.buttonEl.addClass("statblock-file-upload");
-            b.buttonEl.appendChild(inputAppFile);
-            b.onClick(() => inputAppFile.click());
-        });
-
-        const importImprovedInitiative = new Setting(importAdditional)
-            .setName("Import Improved Initiative Data")
-            .setDesc("Only import content that you own.");
-        const inputImprovedInitiative = createEl("input", {
-            attr: {
-                type: "file",
-                name: "improvedinitiative",
-                accept: ".json",
-                multiple: true
-            }
-        });
-
-        inputImprovedInitiative.onchange = async () => {
-            const { files } = inputImprovedInitiative;
-            if (!files?.length) return;
-            try {
-                const { files } = inputImprovedInitiative;
-                if (!files?.length) return;
-                const monsters = await this.importer.import(files, "improved");
-                if (monsters && monsters.length) {
-                    await this.plugin.saveMonsters(monsters);
-                }
-                this.display();
-            } catch (e) {}
-        };
-
-        importImprovedInitiative.addButton((b) => {
-            b.setButtonText("Choose File(s)").setTooltip(
-                "Import Improved Initiative Data"
-            );
-            b.buttonEl.addClass("statblock-file-upload");
-            b.buttonEl.appendChild(inputImprovedInitiative);
-            b.onClick(() => inputImprovedInitiative.click());
-        });
-
-        const importCritterDB = new Setting(importAdditional)
-            .setName("Import CritterDB Data")
-            .setDesc("Only import content that you own.");
-        const inputCritterDB = createEl("input", {
-            attr: {
-                type: "file",
-                name: "critterdb",
-                accept: ".json",
-                multiple: true
-            }
-        });
-
-        inputCritterDB.onchange = async () => {
-            const { files } = inputCritterDB;
-            if (!files?.length) return;
-            try {
-                const { files } = inputCritterDB;
-                if (!files?.length) return;
-                const monsters = await this.importer.import(files, "critter");
-                if (monsters && monsters.length) {
-                    await this.plugin.saveMonsters(monsters);
-                }
-                this.display();
-            } catch (e) {}
-        };
-
-        importCritterDB.addButton((b) => {
-            b.setButtonText("Choose File(s)").setTooltip(
-                "Import CritterDB Data"
-            );
-            b.buttonEl.addClass("statblock-file-upload");
-            b.buttonEl.appendChild(inputCritterDB);
-            b.onClick(() => inputCritterDB.click());
-        });
-
-        const import5eTools = new Setting(importAdditional)
-            .setName("Import 5e.tools Data")
-            .setDesc("Only import content that you own.");
-        const input5eTools = createEl("input", {
-            attr: {
-                type: "file",
-                name: "fivetools",
-                accept: ".json",
-                multiple: true
-            }
-        });
-
-        input5eTools.onchange = async () => {
-            const { files } = input5eTools;
-            if (!files?.length) return;
-            const monsters = await this.importer.import(files, "5e");
-            if (monsters && monsters.length) {
-                await this.plugin.saveMonsters(monsters);
-            }
-            this.display();
-        };
-
-        import5eTools.addButton((b) => {
-            b.setButtonText("Choose File(s)").setTooltip(
-                "Import 5e.tools Data"
-            );
-            b.buttonEl.addClass("statblock-file-upload");
-            b.buttonEl.appendChild(input5eTools);
-            b.onClick(() => input5eTools.click());
-        });
-        const importTetra = new Setting(importAdditional)
-            .setName("Import TetraCube Data")
-            .setDesc("Only import content that you own.");
-        const inputTetra = createEl("input", {
-            attr: {
-                type: "file",
-                name: "tetra",
-                accept: ".json, .monster",
-                multiple: true
-            }
-        });
-        inputTetra.onchange = async () => {
-            const { files } = inputTetra;
-            if (!files?.length) return;
-            const monsters = await this.importer.import(files, "tetra");
-            if (monsters && monsters.length) {
-                await this.plugin.saveMonsters(monsters);
-            }
-            this.display();
-        };
-        importTetra.addButton((b) => {
-            b.setButtonText("Choose File(s)").setTooltip(
-                "Import TetraCube Data"
-            );
-            b.buttonEl.addClass("statblock-file-upload");
-            b.buttonEl.appendChild(inputTetra);
-            b.onClick(() => inputTetra.click());
-        });
-        const importPF2EMonsterTools = new Setting(importAdditional)
-            .setName("Import PF2eMonsterTools Data")
-            .setDesc("Only import content that you own.");
-        const inputPF2EMonsterTools = createEl("input", {
-            attr: {
-                type: "file",
-                name: "PF2eMonsterTool",
-                accept: ".json, .monster",
-                multiple: true
-            }
-        });
-        inputPF2EMonsterTools.onchange = async () => {
-            const { files } = inputPF2EMonsterTools;
-            if (!files?.length) return;
-            const monsters = await this.importer.import(files, "PF2eMonsterTool");
-            if (monsters && monsters.length) {
-                await this.plugin.saveMonsters(monsters);
-            }
-            this.display();
-        };
-        importPF2EMonsterTools.addButton((b) => {
-            b.setButtonText("Choose File(s)").setTooltip(
-                "Import PF2EMonsterTools Data"
-            );
-            b.buttonEl.addClass("statblock-file-upload");
-            b.buttonEl.appendChild(inputPF2EMonsterTools);
-            b.onClick(() => inputPF2EMonsterTools.click());
-        });
-        // import Pathbuilder
-        const importPathbuilder = new Setting(importAdditional)
-            .setName("Import Pathbuilder Data")
-            .setDesc("Import a PC or NPC exported from Pathbuilder2e.");
-        const inputPathbuilder = createEl("input", {
-            attr: {
-                type: "file",
-                name: "pathbuilder",
-                accept: ".json",
-                multiple: true
-            }
-        });
-        inputPathbuilder.onchange = async () => {
-            const { files } = inputPathbuilder;
-            if (!files.length) return;
-            const monsters = await this.importer.import(files, "pathbuilder");
-            if (monsters && monsters.length) {
-                await this.plugin.saveMonsters(monsters);
-            }
-            this.display();
-        };
-        importPathbuilder.addButton((b) => {
-            b.setButtonText("Choose File(s)").setTooltip(
-                "Import Pathbuilder Data"
-            );
-            b.buttonEl.addClass("statblock-file-upload");
-            b.buttonEl.appendChild(inputPathbuilder);
-            b.onClick(() => inputPathbuilder.click());
-        });
-
-
 
         const importGeneric = new Setting(importAdditional)
-            .setName("Import Generic Data")
+            .setName("Import from JSON")
             .setDesc(
                 createFragment((e) => {
                     e.createSpan({
-                        text: "Import generic JSON files. JSON objects will be imported "
+                        text: "Import participant data from a JSON file. Objects are imported "
                     });
                     e.createEl("strong", { text: "as-is" });
-                    e.createSpan({ text: " and all objects must have the " });
+                    e.createSpan({ text: " and must each have a " });
                     e.createEl("code", { text: "name" });
                     e.createSpan({ text: " property." });
                 })
@@ -1007,7 +765,7 @@ export default class StatblockSettingTab extends PluginSettingTab {
             attr: {
                 type: "file",
                 name: "generic",
-                accept: ".json, .monster",
+                accept: ".json",
                 multiple: true
             }
         });
@@ -1021,7 +779,7 @@ export default class StatblockSettingTab extends PluginSettingTab {
             this.display();
         };
         importGeneric.addButton((b) => {
-            b.setButtonText("Choose File(s)").setTooltip("Import Generic Data");
+            b.setButtonText("Choose File(s)").setTooltip("Import JSON Data");
             b.buttonEl.addClass("statblock-file-upload");
             b.buttonEl.appendChild(inputGeneric);
             b.onClick(() => inputGeneric.click());
@@ -1029,12 +787,12 @@ export default class StatblockSettingTab extends PluginSettingTab {
     }
     generateMonsters(containerEl: HTMLDivElement) {
         containerEl.empty();
-        new Setting(containerEl).setHeading().setName("Bestiary");
+        new Setting(containerEl).setHeading().setName("Participants");
         const additionalContainer = containerEl.createDiv(
             "statblock-additional-container statblock-monsters"
         );
         new Setting(additionalContainer)
-            .setName("Add Creature")
+            .setName("Add Participant")
             .addButton((b) => {
                 b.setIcon("plus-with-circle").onClick(() => {
                     const modal = new EditMonsterModal(this.plugin);

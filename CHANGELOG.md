@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/golodhrim/ttx-character-cards/compare/v1.0.0...v1.1.0) (2026-03-19)
+
+
+### Features
+
+* add TTX Scenario and TTX Player Card layouts; drop all D&D layouts ([7fc7770](https://github.com/golodhrim/ttx-character-cards/commit/7fc777095f126cca1a9d7ba8752fd09cbe70992b))
+
+
+### Bug Fixes
+
+* make getFiles() recurse into subfolders when scanning library paths ([fb82fec](https://github.com/golodhrim/ttx-character-cards/commit/fb82fecae140328907acd709292930e55d32538d))
+* rename "Save to Bestiary" and "Creature YAML" to TTX labels ([77eae48](https://github.com/golodhrim/ttx-character-cards/commit/77eae482ee92adb4ffb7ce920ea3a7e4eb3d4420))
+* rename Creature pane ribbon/commands to Character Viewer; fix layout duplicates ([6898397](https://github.com/golodhrim/ttx-character-cards/commit/68983979a344a56f15b98d4f24617edcee23fd99))
+* replace all remaining creature/monster UI labels with TTX terms ([ab58507](https://github.com/golodhrim/ttx-character-cards/commit/ab58507011fc84f26b4b09a404b3571b0d856f4a))
+* resolve esbuild CSS deprecation warning ([890e907](https://github.com/golodhrim/ttx-character-cards/commit/890e907b8ca2cf96da0c77d9e556cd9308683f95))
+* rewrite Participant interface for TTX — fixes crm_role field matching ([78e539c](https://github.com/golodhrim/ttx-character-cards/commit/78e539cc3b5f83e62ec271e707a0c4dec5832d56))
+* use correct 'display' property key in TTX layouts (was 'label') ([9740b0c](https://github.com/golodhrim/ttx-character-cards/commit/9740b0c8b736b1455dad9dadf4b8426b9d6d2d68))
+
 ## [4.10.3](https://github.com/javalent/fantasy-statblocks/compare/4.10.2...4.10.3) (2026-01-21)
 
 

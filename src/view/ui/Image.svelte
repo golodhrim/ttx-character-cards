@@ -1,12 +1,12 @@
 <script lang="ts">
-    import type { Monster } from "index";
+    import type { Participant } from "index";
     import type { ImageItem } from "src/layouts/layout.types";
     import type StatBlockPlugin from "src/main";
     import { getContext } from "svelte";
     import { Platform, TFile } from "obsidian";
     import { Linkifier } from "src/parser/linkify";
 
-    export let monster: Monster;
+    export let participant: Participant;
     export let item: ImageItem;
 
     const plugin = getContext<StatBlockPlugin>("plugin");
@@ -42,18 +42,18 @@
         if (
             item.properties.length &&
             item.properties.some(
-                (p) => p in monster && typeof monster[p] == "string"
+                (p) => p in participant && typeof participant[p] == "string"
             )
         ) {
             const props = item.properties.filter(
-                (p) => p in monster && typeof monster[p] == "string"
+                (p) => p in participant && typeof participant[p] == "string"
             );
             if (props.length > 1) {
                 console.log(
                     "Fantasy Statblocks: Multiple image properties provided, using first."
                 );
             }
-            const path = monster[props[0]] as string;
+            const path = participant[props[0]] as string;
 
             return getLink(path);
         }
@@ -87,7 +87,7 @@
         on:click={(evt) => open(evt)}
         on:mouseenter={(evt) => popover(evt)}
     >
-        <img src={image} alt={monster.name} />
+        <img src={image} alt={participant.name} />
     </div>
 {/if}
 

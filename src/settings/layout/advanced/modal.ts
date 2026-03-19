@@ -97,9 +97,9 @@ export default class DiceParsingModal extends FantasyStatblockModal {
                 text: " (the RegExpMatchArray), and "
             });
 
-            e.createEl("code", { text: "monster" });
+            e.createEl("code", { text: "participant" });
             e.createSpan({
-                text: " (current monster being rendered) parameters available in the callback."
+                text: " (current participant being rendered) parameters available in the callback."
             });
             e.createEl("br");
             e.createEl("br");

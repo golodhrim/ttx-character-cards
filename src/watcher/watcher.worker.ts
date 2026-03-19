@@ -1,4 +1,4 @@
-import type { Monster } from "index";
+import type { Participant } from "index";
 import copy from "fast-copy";
 import type { CachedMetadata, FrontMatterInfo } from "obsidian";
 import { transformTraits } from "src/util/util";
@@ -23,7 +23,7 @@ interface IWorkerData {
     get: string;
     done: string;
     update: {
-        monster: Monster;
+        participant: Participant;
         path: string;
     };
     save: void;
@@ -97,7 +97,7 @@ class Parser {
                 );
 
             const frontmatter = LinkStringifier.transformSource(statBlock);
-            const monster: Monster = Object.assign(
+            const participant: Participant = Object.assign(
                 {},
                 YAML.parse(frontmatter),
                 {
@@ -105,8 +105,8 @@ class Parser {
                 }
             );
             if (this.debug)
-                console.debug(`Fantasy Statblocks: ${JSON.stringify(monster)}`);
-            this.processMonster(monster, file);
+                console.debug(`Fantasy Statblocks: ${JSON.stringify(participant)}`);
+            this.processParticipant(participant, file);
         }
     }
 
@@ -177,55 +177,55 @@ class Parser {
             info.frontmatter
         );
 
-        const monster: Monster = this.validate(
+        const participant: Participant = this.validate(
             Object.assign({}, copy(YAML.parse(frontmatter)), {
                 mtime: file.mtime
             })
         );
 
-        if (monster.traits) {
-            monster.traits = transformTraits([], monster.traits);
+        if (participant.traits) {
+            participant.traits = transformTraits([], participant.traits);
         }
-        this.processMonster(monster, file);
+        this.processParticipant(participant, file);
     }
 
-    private processMonster(monster: Monster, file: FileDetails) {
-        if (monster.actions) {
-            monster.actions = transformTraits([], monster.actions);
+    private processParticipant(participant: Participant, file: FileDetails) {
+        if (participant.actions) {
+            participant.actions = transformTraits([], participant.actions);
         }
-        if (monster.bonus_actions) {
-            monster.bonus_actions = transformTraits([], monster.bonus_actions);
+        if (participant.bonus_actions) {
+            participant.bonus_actions = transformTraits([], participant.bonus_actions);
         }
-        if (monster.reactions) {
-            monster.reactions = transformTraits([], monster.reactions);
+        if (participant.reactions) {
+            participant.reactions = transformTraits([], participant.reactions);
         }
-        if (monster.legendary_actions) {
-            monster.legendary_actions = transformTraits(
+        if (participant.legendary_actions) {
+            participant.legendary_actions = transformTraits(
                 [],
-                monster.legendary_actions
+                participant.legendary_actions
             );
         }
         if (
-            monster["statblock-link"] &&
-            monster["statblock-link"].startsWith("#")
+            participant["statblock-link"] &&
+            participant["statblock-link"].startsWith("#")
         ) {
-            monster[
+            participant[
                 "statblock-link"
-            ] = `[${monster.name}](${file.path}${monster["statblock-link"]})`;
+            ] = `[${participant.name}](${file.path}${participant["statblock-link"]})`;
         }
 
         if (this.debug)
             console.debug(
-                `Fantasy Statblocks: Adding ${monster.name} to bestiary from ${file.basename}`
+                `Fantasy Statblocks: Adding ${participant.name} to library from ${file.basename}`
             );
 
         ctx.postMessage<UpdateEventMessage>({
             type: "update",
-            data: { monster, path: file.path }
+            data: { participant, path: file.path }
         });
     }
-    validate(draft: Partial<Monster>): Monster {
-        return draft as Monster;
+    validate(draft: Partial<Participant>): Participant {
+        return draft as Participant;
     }
 }
 new Parser();

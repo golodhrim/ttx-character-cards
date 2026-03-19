@@ -1,4 +1,4 @@
-import type { Monster } from "index";
+import type { Participant } from "index";
 import { Modal, Notice, Platform } from "obsidian";
 import type StatBlockPlugin from "src/main";
 
@@ -6,11 +6,11 @@ import EditMonsterApp from "./EditParticipant.svelte";
 import StatBlockRenderer from "src/view/statblock";
 import FantasyStatblockModal from "src/modal/modal";
 
-export class EditMonsterModal extends FantasyStatblockModal {
+export class EditParticipantModal extends FantasyStatblockModal {
     private _instance: EditMonsterApp;
     constructor(
         plugin: StatBlockPlugin,
-        private monster: Partial<Monster> = {}
+        private participant: Partial<Participant> = {}
     ) {
         super(plugin);
     }
@@ -19,18 +19,18 @@ export class EditMonsterModal extends FantasyStatblockModal {
         this._instance = new EditMonsterApp({
             target: this.contentEl,
             props: {
-                monster: this.monster
+                participant: this.participant
             }
         });
         this._instance.$on("cancel", () => {
             this.close();
         });
-        this._instance.$on("save", async ({ detail }: { detail: Monster }) => {
+        this._instance.$on("save", async ({ detail }: { detail: Participant }) => {
             if (!detail.name) {
                 new Notice("Participants must be given a name.");
                 return;
             }
-            await this.plugin.updateMonster(this.monster as Monster, detail);
+            await this.plugin.updateParticipant(this.participant as Participant, detail);
             this.close();
         });
     }
@@ -41,8 +41,8 @@ export class EditMonsterModal extends FantasyStatblockModal {
     }
 }
 
-export class ViewMonsterModal extends FantasyStatblockModal {
-    constructor(plugin: StatBlockPlugin, private monster: Monster) {
+export class ViewParticipantModal extends FantasyStatblockModal {
+    constructor(plugin: StatBlockPlugin, private participant: Participant) {
         super(plugin);
     }
     async display() {
@@ -51,7 +51,7 @@ export class ViewMonsterModal extends FantasyStatblockModal {
         }
         new StatBlockRenderer({
             container: this.contentEl,
-            monster: this.monster,
+            participant: this.participant,
             plugin: this.plugin
         });
     }

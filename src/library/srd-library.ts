@@ -17,9 +17,9 @@
  *  "15 COPYRIGHT NOTICE Open Game License v 1.0 Copyright 2000, Wizards of the Coast, Inc."
  */
 
-import type { Monster } from "index";
+import type { Participant } from "index";
 
-export const BESTIARY: Monster[] = [
+export const SRD_LIBRARY: Participant[] = [
     {
         name: "Aboleth",
         source: "5e SRD",
@@ -10299,7 +10299,7 @@ export const BESTIARY: Monster[] = [
             { "5th level (3 slots)": "cloudkill, scrying" },
             { "6th level (1 slot)": "disintegrate, globe of invulnerability" },
             { "7th level (1 slot)": "finger of death, plane shift" },
-            { "8th level (1 slot)": "dominate monster, power word stun" },
+            { "8th level (1 slot)": "dominate participant, power word stun" },
             { "9th level (1 slot)": "power word kill" }
         ]
     },
@@ -12175,7 +12175,7 @@ export const BESTIARY: Monster[] = [
             },
             {
                 name: "Innate Spellcasting",
-                desc: "The pit fiend's spellcasting ability is Charisma (spell save DC 21). The pit fiend can innately cast the following spells, requiring no material components:\nAt will: detect magic, fireball\n3/day each: hold monster, wall of fire",
+                desc: "The pit fiend's spellcasting ability is Charisma (spell save DC 21). The pit fiend can innately cast the following spells, requiring no material components:\nAt will: detect magic, fireball\n3/day each: hold participant, wall of fire",
                 attack_bonus: 0
             }
         ],
@@ -13191,12 +13191,12 @@ export const BESTIARY: Monster[] = [
         traits: [
             {
                 name: "Iron Scent",
-                desc: "The rust monster can pinpoint, by scent, the location of ferrous metal within 30 feet of it.",
+                desc: "The rust participant can pinpoint, by scent, the location of ferrous metal within 30 feet of it.",
                 attack_bonus: 0
             },
             {
                 name: "Rust Metal",
-                desc: "Any nonmagical weapon made of metal that hits the rust monster corrodes. After dealing damage, the weapon takes a permanent and cumulative -1 penalty to damage rolls. If its penalty drops to -5, the weapon is destroyed. Non magical ammunition made of metal that hits the rust monster is destroyed after dealing damage.",
+                desc: "Any nonmagical weapon made of metal that hits the rust participant corrodes. After dealing damage, the weapon takes a permanent and cumulative -1 penalty to damage rolls. If its penalty drops to -5, the weapon is destroyed. Non magical ammunition made of metal that hits the rust participant is destroyed after dealing damage.",
                 attack_bonus: 0
             }
         ],
@@ -13210,7 +13210,7 @@ export const BESTIARY: Monster[] = [
             },
             {
                 name: "Antennae",
-                desc: "The rust monster corrodes a nonmagical ferrous metal object it can see within 5 feet of it. If the object isn't being worn or carried, the touch destroys a 1-foot cube of it. If the object is being worn or carried by a creature, the creature can make a DC 11 Dexterity saving throw to avoid the rust monster's touch.\nIf the object touched is either metal armor or a metal shield being worn or carried, its takes a permanent and cumulative -1 penalty to the AC it offers. Armor reduced to an AC of 10 or a shield that drops to a +0 bonus is destroyed. If the object touched is a held metal weapon, it rusts as described in the Rust Metal trait.",
+                desc: "The rust participant corrodes a nonmagical ferrous metal object it can see within 5 feet of it. If the object isn't being worn or carried, the touch destroys a 1-foot cube of it. If the object is being worn or carried by a creature, the creature can make a DC 11 Dexterity saving throw to avoid the rust participant's touch.\nIf the object touched is either metal armor or a metal shield being worn or carried, its takes a permanent and cumulative -1 penalty to the AC it offers. Armor reduced to an AC of 10 or a shield that drops to a +0 bonus is destroyed. If the object touched is a held metal weapon, it rusts as described in the Rust Metal trait.",
                 attack_bonus: 0
             }
         ]
@@ -17465,8 +17465,8 @@ export const BESTIARY: Monster[] = [
     }
 ];
 
-export const BESTIARY_BY_NAME: Map<string, Monster> = new Map(
-    BESTIARY.map((monster) => {
-        return [monster.name, monster];
+export const SRD_LIBRARY_BY_NAME: Map<string, Participant> = new Map(
+    SRD_LIBRARY.map((participant) => {
+        return [participant.name, participant];
     })
 );

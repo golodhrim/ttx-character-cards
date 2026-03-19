@@ -9,7 +9,7 @@ import {
 } from "obsidian";
 import type StatBlockPlugin from "src/main";
 import type { CommonProps } from "src/layouts/layout.types";
-import { Bestiary } from "src/library/library";
+import { Library } from "src/library/library";
 enum SuggestContext {
     Layout,
     Creature,
@@ -205,14 +205,14 @@ export class StatblockSuggester extends EditorSuggest<string> {
                 query
             };
         }
-        if (/^(monster|creature|extends):/.test(line)) {
+        if (/^(participant|creature|extends):/.test(line)) {
             this._context = SuggestContext.Creature;
-            const match = line.match(/^(monster|creature|extends):\s?(.*)\n?/);
+            const match = line.match(/^(participant|creature|extends):\s?(.*)\n?/);
             if (!match) return null;
             const [_, param, query] = match;
 
             if (
-                Bestiary.getBestiaryNames().find(
+                Library.getBestiaryNames().find(
                     (p) => p.toLowerCase() == query.toLowerCase()
                 )
             ) {

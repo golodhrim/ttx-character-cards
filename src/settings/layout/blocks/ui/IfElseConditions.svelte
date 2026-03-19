@@ -41,10 +41,10 @@
                     <br />
                     <br />
                     <span>The expression receives the </span>
-                    <code>monster</code>
+                    <code>participant</code>
                     <span>
                         parameter, which can be used to access properties of the
-                        monster being rendered, and the 
+                        participant being rendered, and the 
                     </span>
                     <code>plugin</code>
                     <span>
@@ -57,7 +57,7 @@
                         All conditions must return a true/false value. For
                         example:
                     </strong>
-                    <code>return monster.ac &gt; 1</code>
+                    <code>return participant.ac &gt; 1</code>
                 </div>
             {/if}
         </div>

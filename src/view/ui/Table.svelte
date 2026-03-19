@@ -1,10 +1,10 @@
 <script lang="ts">
-    import type { Monster } from "index";
+    import type { Participant } from "index";
     import type { TableItem } from "src/layouts/layout.types";
     import { slugify, stringify } from "src/util/util";
     import TextContentHolder from "./TextContentHolder.svelte";
 
-    export let monster: Monster;
+    export let participant: Participant;
     export let item: TableItem;
 
     function getMod(stat: number) {
@@ -20,13 +20,13 @@
             const func = item.modifier.contains("return")
                 ? item.modifier
                 : `return ${item.modifier}`;
-            const customMod = new Function("stat", "monster", func);
-            mod = customMod(stat, monster);
+            const customMod = new Function("stat", "participant", func);
+            mod = customMod(stat, participant);
         }
         return `${mod >= 0 ? "+" : "-"}${Math.abs(mod)}`;
     }
 
-    let values: any[] = monster[item.properties[0]] as any[];
+    let values: any[] = participant[item.properties[0]] as any[];
     if (!Array.isArray(values)) {
         values = [];
     }

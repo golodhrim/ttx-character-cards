@@ -7,11 +7,11 @@
         parseYaml,
         stringifyYaml
     } from "obsidian";
-    import type { Monster } from "index";
+    import type { Participant } from "index";
 
     const dispatch = createEventDispatcher();
 
-    export let monster: Partial<Monster> = {};
+    export let participant: Partial<Participant> = {};
     let useJson = false;
     let textArea: HTMLTextAreaElement;
 
@@ -31,9 +31,9 @@
                 if (useJson) {
                     try {
                         if (useJson) {
-                            monster = JSON.parse(textArea.value);
+                            participant = JSON.parse(textArea.value);
                         } else {
-                            monster = parseYaml(textArea.value);
+                            participant = parseYaml(textArea.value);
                         }
                     } catch (e) {
                         console.error(e);
@@ -43,7 +43,7 @@
                         return;
                     }
                 }
-                dispatch("save", monster);
+                dispatch("save", participant);
             });
     };
     const cancel = (node: HTMLElement) => {
@@ -56,17 +56,17 @@
     };
 
     function getMonsterText() {
-        if (useJson) return JSON.stringify(monster, null, 2);
-        if (!monster || !Object.keys(monster ?? {})?.length) return "";
-        return stringifyYaml(monster).trim();
+        if (useJson) return JSON.stringify(participant, null, 2);
+        if (!participant || !Object.keys(participant ?? {})?.length) return "";
+        return stringifyYaml(participant).trim();
     }
 
     function setMonster() {
         try {
             if (useJson) {
-                monster = JSON.parse(textArea.value);
+                participant = JSON.parse(textArea.value);
             } else {
-                monster = parseYaml(textArea.value);
+                participant = parseYaml(textArea.value);
             }
         } catch (e) {
             console.error(e);
@@ -74,7 +74,7 @@
     }
 </script>
 
-<div class="edit-monster-modal">
+<div class="edit-participant-modal">
     <h2>Edit Participant</h2>
     <div class="top-level">
         <div class="json">

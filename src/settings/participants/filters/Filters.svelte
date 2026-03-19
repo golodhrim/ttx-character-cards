@@ -5,16 +5,16 @@
     import { ActiveFilters, NameFilter, SourcesFilter } from "./filters";
     import { slide } from "svelte/transition";
     import { linear } from "svelte/easing";
-    import { Bestiary } from "src/library/library";
+    import { Library } from "src/library/library";
     import { writable } from "svelte/store";
     import { createEventDispatcher } from "svelte";
 
-    const sources = writable([...Bestiary.getIndex("source").keys()]);
+    const sources = writable([...Library.getIndex("source").keys()]);
 
     const dispatch = createEventDispatcher<{ remove: void }>();
-    Bestiary.onIndexUpdated(
+    Library.onIndexUpdated(
         "source",
-        () => ($sources = [...Bestiary.getIndex("source").keys()])
+        () => ($sources = [...Library.getIndex("source").keys()])
     );
     let open = true;
 

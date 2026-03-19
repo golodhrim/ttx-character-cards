@@ -17,7 +17,7 @@
     import Content from "./Content.svelte";
     import SpellItem from "./SpellItem.svelte";
     import type StatBlockPlugin from "src/main";
-    import type { Monster, Trait } from "index";
+    import type { Participant, Trait } from "index";
     import { Linkifier } from "src/parser/linkify";
     import Action from "./Action.svelte";
     import type { Writable } from "svelte/store";
@@ -35,9 +35,9 @@
 
     export let plugin: StatBlockPlugin;
 
-    const monsterStore = getContext<Writable<Monster>>("monster");
-    let monster = $monsterStore;
-    monsterStore.subscribe((m) => (monster = m));
+    const participantStore = getContext<Writable<Participant>>("participant");
+    let participant = $participantStore;
+    participantStore.subscribe((m) => (participant = m));
     const ensureColon = (header: string) => {
         if (/[^a-zA-Z0-9]$/.test(header)) return header;
         return `${header}:`;
@@ -60,20 +60,20 @@
         if (!("properties" in item)) return true;
         if (!item.properties.length) return true;
         return item.properties.some((prop) => {
-            if (prop in monster) {
+            if (prop in participant) {
                 if (
-                    Array.isArray(monster[prop]) &&
-                    (monster[prop] as Array<any>).length
+                    Array.isArray(participant[prop]) &&
+                    (participant[prop] as Array<any>).length
                 ) {
                     return true;
                 }
                 if (
-                    typeof monster[prop] === "string" &&
-                    (monster[prop] as string).length
+                    typeof participant[prop] === "string" &&
+                    (participant[prop] as string).length
                 ) {
                     return true;
                 }
-                if (typeof monster[prop] === "number") {
+                if (typeof participant[prop] === "number") {
                     return true;
                 }
             }
@@ -118,7 +118,7 @@
                     new SectionHeading({
                         target,
                         props: {
-                            monster,
+                            participant,
                             item
                         },
                         context
@@ -141,7 +141,7 @@
                     target,
                     props: {
                         block: item,
-                        monster
+                        participant
                     }
                 });
                 break;
@@ -175,7 +175,7 @@
                 const heading = new Heading({
                     target,
                     props: {
-                        monster,
+                        participant,
                         item
                     },
                     context
@@ -191,8 +191,8 @@
                     const funct = (frame.contentWindow as any).Function;
                     let parsed: boolean = false;
                     try {
-                        const func = new funct("monster", "plugin", condition);
-                        parsed = func.call(undefined, monster, plugin) ?? false;
+                        const func = new funct("participant", "plugin", condition);
+                        parsed = func.call(undefined, participant, plugin) ?? false;
                     } catch (e) {
                         console.error(e);
                         continue;
@@ -219,7 +219,7 @@
                     new SectionHeading({
                         target,
                         props: {
-                            monster,
+                            participant,
                             item
                         },
                         context
@@ -250,7 +250,7 @@
                 new Image({
                     target,
                     props: {
-                        monster,
+                        participant,
                         item
                     },
                     context
@@ -283,7 +283,7 @@
                 new PropertyLine({
                     target,
                     props: {
-                        monster,
+                        participant,
                         item
                     },
                     context
@@ -294,7 +294,7 @@
                 new Saves({
                     target,
                     props: {
-                        monster,
+                        participant,
                         item
                     },
                     context
@@ -302,7 +302,7 @@
                 break;
             }
             case "spells": {
-                const blocks: (Spell | string)[] = monster[
+                const blocks: (Spell | string)[] = participant[
                     item.properties[0]
                 ] as Spell[];
 
@@ -348,7 +348,7 @@
                         lastBlock.spells.push(spell);
                     } else {
                         const missingHeaderBlock: SpellBlock = {
-                            header: `${monster.name} knows the following spells:`,
+                            header: `${participant.name} knows the following spells:`,
                             spells: [spell]
                         };
                         acc.push(missingHeaderBlock);
@@ -373,8 +373,8 @@
                                 property: item.properties[0],
                                 desc: block.header,
                                 item,
-                                monster,
-                                trait: monster[item.properties[0]] as Trait
+                                participant,
+                                trait: participant[item.properties[0]] as Trait
                             }
                         });
                         targets.push(
@@ -404,7 +404,7 @@
                 new Subheading({
                     target,
                     props: {
-                        monster,
+                        participant,
                         item
                     },
                     context
@@ -415,7 +415,7 @@
                 new Table({
                     target,
                     props: {
-                        monster,
+                        participant,
                         item
                     },
                     context
@@ -426,14 +426,14 @@
                 new Text({
                     target,
                     props: {
-                        monster,
+                        participant,
                         item
                     }
                 });
                 break;
             }
             case "traits": {
-                const blocks: Trait[] = monster[item.properties[0]] as Trait[];
+                const blocks: Trait[] = participant[item.properties[0]] as Trait[];
                 if (!Array.isArray(blocks) || !blocks.length) return [];
 
                 const firstElement = createDivForStatblockItem(item, {
@@ -446,7 +446,7 @@
                             "statblock-section-heading"
                         ),
                         props: {
-                            monster,
+                            participant,
                             item
                         },
                         context
@@ -461,13 +461,13 @@
                         props: {
                             name: "",
                             desc: item.subheadingText.replace(
-                                /\{\{monster\}\}/g,
-                                monster.name
+                                /\{\{participant\}\}/g,
+                                participant.name
                             ),
                             property: "trait-subheading",
                             item,
-                            monster,
-                            trait: monster[item.properties[0]] as Trait
+                            participant,
+                            trait: participant[item.properties[0]] as Trait
                         },
                         context
                     });
@@ -484,7 +484,7 @@
                                 desc: blocks[0].desc,
                                 property: item.properties[0],
                                 item,
-                                monster,
+                                participant,
                                 trait: blocks[0]
                             },
                             context
@@ -503,7 +503,7 @@
                                     desc: block.desc,
                                     property: item.properties[0],
                                     item,
-                                    monster,
+                                    participant,
                                     trait: block
                                 },
                                 context
@@ -534,8 +534,8 @@
         return targets.filter((el) => el.hasChildNodes());
     };
     $: maxHeight =
-        !isNaN(Number(monster.columnHeight)) && monster.columnHeight! > 0
-            ? monster.columnHeight
+        !isNaN(Number(participant.columnHeight)) && participant.columnHeight! > 0
+            ? participant.columnHeight
             : Infinity;
 
     if (!targets.length) {
@@ -547,12 +547,12 @@
 
     let columnWidth = "400px";
 
-    if (monster.columnWidth) {
-        if (typeof monster.columnWidth == "number") {
-            columnWidth = `${monster.columnWidth}px`;
+    if (participant.columnWidth) {
+        if (typeof participant.columnWidth == "number") {
+            columnWidth = `${participant.columnWidth}px`;
         }
-        if (typeof monster.columnWidth == "string") {
-            columnWidth = monster.columnWidth;
+        if (typeof participant.columnWidth == "string") {
+            columnWidth = participant.columnWidth;
         }
     } else if (layout.columnWidth) {
         columnWidth = `${layout.columnWidth}px`;
@@ -586,11 +586,11 @@
                 heights.push(target.scrollHeight);
             }
 
-            if (monster.forceColumns) {
+            if (participant.forceColumns) {
                 split = columnEl.scrollHeight / maxColumns;
-            } else if (monster.columns && monster.columns > 0) {
+            } else if (participant.columns && participant.columns > 0) {
                 split = Math.max(
-                    columnEl.scrollHeight / monster.columns,
+                    columnEl.scrollHeight / participant.columns,
                     columnEl.scrollHeight / columns
                 );
             } else {

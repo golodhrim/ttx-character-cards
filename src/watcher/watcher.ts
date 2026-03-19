@@ -18,7 +18,7 @@ import FSWorker, {
     SaveMessage,
     DebugMessage
 } from "./watcher.worker";
-import { Bestiary } from "src/library/library";
+import { Library } from "src/library/library";
 
 declare global {
     interface Worker {
@@ -143,20 +143,20 @@ class WatcherClass extends Component {
                 "message",
                 async (evt: MessageEvent<UpdateEventMessage>) => {
                     if (evt.data.type == "update") {
-                        let { monster, path } = evt.data.data;
+                        let { participant, path } = evt.data.data;
 
-                        let update = Bestiary.hasCreature(monster.name);
-                        monster.path = path;
+                        let update = Library.hasCreature(participant.name);
+                        participant.path = path;
 
-                        Bestiary.addEphemeralCreature(monster);
+                        Library.addEphemeralCreature(participant);
 
-                        this.watchPaths.set(path, monster.name);
+                        this.watchPaths.set(path, participant.name);
 
                         if (this.plugin.settings.debug)
                             console.debug(
                                 `Fantasy Statblocks: ${
                                     update ? "Updated" : "Added"
-                                } ${monster.name}`
+                                } ${participant.name}`
                             );
                     }
                 }
@@ -175,7 +175,7 @@ class WatcherClass extends Component {
 
         this.plugin.app.workspace.onLayoutReady(() => {
             if (!this.plugin.settings.autoParse) {
-                Bestiary.setResolved(true);
+                Library.setResolved(true);
                 return;
             }
             this.start(true);
@@ -197,19 +197,19 @@ class WatcherClass extends Component {
             new Notice("Fantasy Statblocks: Frontmatter Parsing complete.");
             this.announce = false;
         }
-        Bestiary.setResolved(true);
+        Library.setResolved(true);
     }
     async delete(path: string) {
-        Bestiary.removeEphemeralCreature(this.watchPaths.get(path));
+        Library.removeEphemeralCreature(this.watchPaths.get(path));
         this.watchPaths.delete(path);
         if (this.plugin.settings.debug)
             console.debug(
-                `Fantasy Statblocks: Removing '${path}' from bestiary`
+                `Fantasy Statblocks: Removing '${path}' from library`
             );
     }
     startTime: number;
     start(announce = false) {
-        Bestiary.setResolved(false);
+        Library.setResolved(false);
         this.announce = announce;
         this.startTime = Date.now();
         console.info("Fantasy Statblocks: Starting Frontmatter Parsing.");
@@ -262,9 +262,9 @@ class WatcherClass extends Component {
     }
     async getFileInformation(file: TFile): Promise<FileCacheMessage | null> {
         if (this.watchPaths.has(file.path)) {
-            const monster = Bestiary.get(this.watchPaths.get(file.path));
+            const participant = Library.get(this.watchPaths.get(file.path));
 
-            if (monster?.mtime == file.stat.mtime) return null;
+            if (participant?.mtime == file.stat.mtime) return null;
         }
 
         const cache = this.plugin.app.metadataCache.getFileCache(file);

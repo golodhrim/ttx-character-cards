@@ -1,8 +1,8 @@
 import fastCopy from "fast-copy";
-import type { Monster } from "index";
+import type { Participant } from "index";
 import { Component, MarkdownRenderer } from "obsidian";
 import type { HomebrewCreature } from "obsidian-overload";
-import { Bestiary } from "src/library/library";
+import { Library } from "src/library/library";
 import type StatBlockPlugin from "src/main";
 import { LinkStringifier } from "src/parser/stringifier";
 import StatBlockRenderer from "src/view/statblock";
@@ -41,94 +41,94 @@ export class API {
     }
 
     /**
-     * Get the fully defined plugin bestiary.
+     * Get the fully defined plugin library.
      *
-     * @returns {Map<string, Monster>}
+     * @returns {Map<string, Participant>}
      */
-    getBestiary() {
-        return Bestiary.getBestiary();
+    getLibrary() {
+        return Library.getLibrary();
     }
 
     /**
-     * Get a list of bestiary creatures.
+     * Get a list of library participants.
      *
-     * @returns {Monster[]}
+     * @returns {Participant[]}
      */
-    getBestiaryCreatures(): Monster[] {
-        return Bestiary.getBestiaryCreatures();
+    getLibraryParticipants(): Participant[] {
+        return Library.getLibraryParticipants();
     }
 
     /**
-     * Get a list of bestiary names.
+     * Get a list of library names.
      *
      * @returns {string[]}
      */
-    getBestiaryNames(): string[] {
-        return Bestiary.getBestiaryNames();
+    getLibraryNames(): string[] {
+        return Library.getLibraryNames();
     }
 
     /**
-     * Returns true if the bestiary contains the creature.
+     * Returns true if the library contains the creature.
      *
      * @param {string} name
      * @returns {boolean}
      */
     hasCreature(name: string): boolean {
-        return Bestiary.hasCreature(name);
+        return Library.hasCreature(name);
     }
 
     /**
-     * Retrieve a fully defined creature out of the bestiary, resolving all extensions.
+     * Retrieve a fully defined participant out of the library, resolving all extensions.
      *
      * @param {string} name Name of the creautre to retrieve.
-     * @returns {Partial<Monster> | null} The creature from the bestiary, or null if not present.
+     * @returns {Partial<Participant> | null} The participant from the library, or null if not present.
      */
-    getCreatureFromBestiary(name: string): Partial<Monster> | null {
-        return Bestiary.getCreatureFromBestiarySync(name);
+    getCreatureFromBestiary(name: string): Partial<Participant> | null {
+        return Library.getCreatureFromBestiarySync(name);
     }
     /**
-     * Retrieve a fully defined creature out of the bestiary, resolving all extensions.
+     * Retrieve a fully defined participant out of the library, resolving all extensions.
      *
      * @param {string} name Name of the creautre to retrieve.
-     * @returns {Partial<Monster> | null} The creature from the bestiary, or null if not present.
+     * @returns {Partial<Participant> | null} The participant from the library, or null if not present.
      */
-    async getCreature(name: string): Promise<Partial<Monster> | null> {
-        return await Bestiary.getCreatureFromBestiary(name);
+    async getCreature(name: string): Promise<Partial<Participant> | null> {
+        return await Library.getCreatureFromBestiary(name);
     }
 
     /**
-     * Gets an array of monsters sorted by the specified field.
+     * Gets an array of participants sorted by the specified field.
      *
-     * @param {string} field - The field by which monsters should be sorted.
-     * @returns {Array<Monster>} - An array of monsters sorted by the specified field.
+     * @param {string} field - The field by which participants should be sorted.
+     * @returns {Array<Participant>} - An array of participants sorted by the specified field.
      */
-    getSortedBy(field: string): Array<Monster> {
-        return Bestiary.getSortedBy(field);
+    getSortedBy(field: string): Array<Participant> {
+        return Library.getSortedBy(field);
     }
     /**
-     * Registers a callback to be invoked when monsters are sorted by the specified field.
+     * Registers a callback to be invoked when participants are sorted by the specified field.
      *
-     * @param {string} field - The field by which monsters are sorted.
-     * @param {(values: Array<Monster>) => void} cb - The callback function to be invoked when sorting occurs.
+     * @param {string} field - The field by which participants are sorted.
+     * @param {(values: Array<Participant>) => void} cb - The callback function to be invoked when sorting occurs.
      * @returns {() => void} - A function that can be used to unregister the callback.
      */
     onSortedBy(
         field: string,
-        cb: (values: Array<Monster>) => void
+        cb: (values: Array<Participant>) => void
     ): () => void {
-        return Bestiary.onSortedBy(field, cb);
+        return Library.onSortedBy(field, cb);
     }
     /**
-     * Registers a custom sorter function for sorting monsters by the specified field.
+     * Registers a custom sorter function for sorting participants by the specified field.
      *
-     * @param {string} field - The field by which monsters should be sorted.
-     * @param {(a: Monster, b: Monster) => number} compareFn - The comparison function used for sorting.
+     * @param {string} field - The field by which participants should be sorted.
+     * @param {(a: Participant, b: Participant) => number} compareFn - The comparison function used for sorting.
      */
     registerSorter(
         field: string,
-        compareFn: (a: Monster, b: Monster) => number
+        compareFn: (a: Participant, b: Participant) => number
     ) {
-        return Bestiary.registerSorter(field, compareFn);
+        return Library.registerSorter(field, compareFn);
     }
 
     /**
@@ -137,7 +137,7 @@ export class API {
      * @returns {Array<string>} - An array of indices.
      */
     getIndices() {
-        return Bestiary.getIndices();
+        return Library.getIndices();
     }
     /**
      * Gets the index map for the specified field.
@@ -146,7 +146,7 @@ export class API {
      * @returns {Map<string, Set<string>>} - The index map for the specified field.
      */
     getIndex(field: string): Map<string, Set<string>> {
-        return Bestiary.getIndex(field);
+        return Library.getIndex(field);
     }
     /**
      * Registers an index for the specified field.
@@ -154,7 +154,7 @@ export class API {
      * @param {string} field - The field for which the index is registered.
      */
     registerIndex(field: string) {
-        return Bestiary.registerIndex(field);
+        return Library.registerIndex(field);
     }
     /**
      * Registers a callback to be invoked when the specified index is updated.
@@ -164,17 +164,17 @@ export class API {
      * @returns {() => void} - A function that can be used to unregister the callback.
      */
     onIndexUpdated(index: string, callback: () => void): () => void {
-        return Bestiary.onIndexUpdated(index, callback);
+        return Library.onIndexUpdated(index, callback);
     }
 
     isResolved(): boolean {
-        return Bestiary.isResolved();
+        return Library.isResolved();
     }
     onResolved(callback: () => void) {
-        return Bestiary.onResolved(callback);
+        return Library.onResolved(callback);
     }
     onUpdated(callback: () => void) {
-        return Bestiary.onUpdated(callback);
+        return Library.onUpdated(callback);
     }
 
     render(
@@ -182,22 +182,22 @@ export class API {
         el: HTMLElement,
         display?: string
     ): Component {
-        const monster: Monster = Object.assign<
-            Partial<Monster>,
+        const participant: Participant = Object.assign<
+            Partial<Participant>,
             HomebrewCreature
         >(
             {},
             fastCopy(this.getCreatureFromBestiary(creature.name ?? "") ?? {}),
             //@ts-ignore
             fastCopy(creature)
-        ) as Monster;
-        if (!monster) return new Component();
+        ) as Participant;
+        if (!participant) return new Component();
         if (display) {
-            monster.name = display;
+            participant.name = display;
         }
         return new StatBlockRenderer({
             container: el,
-            monster,
+            participant,
             plugin: this.#plugin,
             context: "STATBLOCK_RENDERER"
         });

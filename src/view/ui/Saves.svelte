@@ -1,18 +1,18 @@
 <script lang="ts">
-    import type { Monster } from "index";
+    import type { Participant } from "index";
     import { Notice } from "obsidian";
     import type { SavesItem } from "src/layouts/layout.types";
     import { slugify, toTitleCase } from "src/util/util";
     import TextContentHolder from "./TextContentHolder.svelte";
 
-    export let monster: Monster;
+    export let participant: Participant;
     export let item: SavesItem;
 
     function getMod(value: number) {
         return `${value >= 0 ? "+" : ""}${value}`;
     }
 
-    let arr: any[] = monster[item.properties[0]] as any[];
+    let arr: any[] = participant[item.properties[0]] as any[];
     if (!Array.isArray(arr)) {
         arr = [];
     }
@@ -21,8 +21,8 @@
         try {
             const frame = document.body.createEl("iframe");
             const funct = (frame.contentWindow as any).Function;
-            const func = new funct("monster", "property", item.callback);
-            arr = arr.map((save) => func.call(undefined, monster, save) ?? save);
+            const func = new funct("participant", "property", item.callback);
+            arr = arr.map((save) => func.call(undefined, participant, save) ?? save);
             document.body.removeChild(frame);
         } catch (e) {
             new Notice(

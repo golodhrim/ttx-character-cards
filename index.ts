@@ -22,7 +22,7 @@ export type fage_ability =
 export type AbilitySkill = { [key: string]: number }
 export type TraitAbilitySkill = Trait | AbilitySkill;
 
-export interface Monster {
+export interface Participant {
     image?: string;
     name: string;
     size: string;
@@ -114,7 +114,7 @@ export interface Monster {
 
 export interface StatblockParameters
     extends Omit<
-        Monster,
+        Participant,
         | "traits"
         | "actions"
         | "bonus_actions"
@@ -138,7 +138,7 @@ export interface Trait {
 }
 
 export interface StatblockData {
-    monsters: Array<[string, Monster]>;
+    participants: Array<[string, Participant]>;
     defaultLayouts: Record<string, DefaultLayout>;
     layouts: Layout[];
     default: string;

@@ -16,7 +16,7 @@ import fastCopy from "fast-copy";
 
 import { ExpectedValue } from "@javalent/dice-roller";
 import { FolderInputSuggest } from "@javalent/utilities";
-import type { Monster } from "index";
+import type { Participant } from "index";
 import Importer from "src/importers/importer";
 import { DefaultLayouts } from "src/layouts";
 import { LayoutTTXPlayerCard } from "src/layouts/ttx/ttx-player-card";
@@ -26,11 +26,11 @@ import FantasyStatblockModal from "src/modal/modal";
 import { nanoid } from "src/util/util";
 import { Watcher } from "src/watcher/watcher";
 import Participants from "./participants/Participants.svelte";
-import { EditMonsterModal } from "./modal";
+import { EditParticipantModal } from "./modal";
 
 export default class StatblockSettingTab extends PluginSettingTab {
     importer: Importer;
-    results: Partial<Monster>[] = [];
+    results: Partial<Participant>[] = [];
     filter!: Setting;
     $UI!: Participants;
     constructor(app: App, private plugin: StatBlockPlugin) {
@@ -772,9 +772,9 @@ export default class StatblockSettingTab extends PluginSettingTab {
         inputGeneric.onchange = async () => {
             const { files } = inputGeneric;
             if (!files?.length) return;
-            const monsters = await this.importer.import(files, "generic");
-            if (monsters && monsters.length) {
-                await this.plugin.saveMonsters(monsters);
+            const participants = await this.importer.import(files, "generic");
+            if (participants && participants.length) {
+                await this.plugin.saveParticipants(participants);
             }
             this.display();
         };
@@ -789,13 +789,13 @@ export default class StatblockSettingTab extends PluginSettingTab {
         containerEl.empty();
         new Setting(containerEl).setHeading().setName("Participants");
         const additionalContainer = containerEl.createDiv(
-            "statblock-additional-container statblock-monsters"
+            "statblock-additional-container statblock-participants"
         );
         new Setting(additionalContainer)
             .setName("Add Participant")
             .addButton((b) => {
                 b.setIcon("plus-with-circle").onClick(() => {
-                    const modal = new EditMonsterModal(this.plugin);
+                    const modal = new EditParticipantModal(this.plugin);
                     modal.onClose = () => {
                         this.generateMonsters(containerEl);
                     };

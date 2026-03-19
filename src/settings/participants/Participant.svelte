@@ -1,14 +1,14 @@
 <script lang="ts">
     import { Setting, renderMatches, prepareSimpleSearch } from "obsidian";
     import { stringify } from "src/util/util";
-    import { EditMonsterModal, ViewMonsterModal } from "../modal";
-    import type { Monster } from "index";
-    import { Bestiary } from "src/library/library";
+    import { EditParticipantModal, ViewParticipantModal } from "../modal";
+    import type { Participant } from "index";
+    import { Library } from "src/library/library";
     import { getContext } from "../layout/context";
     import { NameFilter } from "./filters/filters";
     import { createEventDispatcher } from "svelte";
 
-    export let item: Monster;
+    export let item: Participant;
 
     const dispatch = createEventDispatcher<{ close: void }>();
     const plugin = getContext("plugin");
@@ -36,13 +36,13 @@
             );
         }
 
-        if (Bestiary.isLocal(item.name)) {
+        if (Library.isLocal(item.name)) {
             content
                 .addExtraButton((b) => {
                     b.setIcon("pencil")
                         .setTooltip("Edit")
                         .onClick(() => {
-                            const modal = new EditMonsterModal(plugin, item);
+                            const modal = new EditParticipantModal(plugin, item);
                             modal.open();
                         });
                 })
@@ -68,7 +68,7 @@
             b.setIcon("info")
                 .setTooltip("View")
                 .onClick(() => {
-                    const modal = new ViewMonsterModal(plugin, item as Monster);
+                    const modal = new ViewParticipantModal(plugin, item as Participant);
                     modal.open();
                 });
         });

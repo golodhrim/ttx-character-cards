@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Bestiary } from "src/library/library";
+    import { Library } from "src/library/library";
     import Pagination from "./Pagination.svelte";
     import Participant from "./Participant.svelte";
     import type StatBlockPlugin from "src/main";
@@ -7,7 +7,7 @@
     import Filters from "./filters/Filters.svelte";
     import { NONE, NameFilter, SourcesFilter } from "./filters/filters";
     import { prepareSimpleSearch } from "obsidian";
-    import type { Monster } from "index";
+    import type { Participant } from "index";
     import { derived, writable } from "svelte/store";
     import { onDestroy } from "svelte";
     import { confirmWithModal } from "src/view/statblock";
@@ -19,8 +19,8 @@
     export let backgroundColor: string;
     export let paddingTop: string;
 
-    const creatures = writable(Bestiary.getBestiaryCreatures());
-    let ref = Bestiary.onSortedBy("name", (values) => {
+    const creatures = writable(Library.getBestiaryCreatures());
+    let ref = Library.onSortedBy("name", (values) => {
         $creatures = values;
     });
 
@@ -33,7 +33,7 @@
     const filtered = derived(
         [creatures, NameFilter, SourcesFilter],
         ([creatures, name, sources]) => {
-            let toConsider: Monster[] = [];
+            let toConsider: Participant[] = [];
             for (const creature of creatures) {
                 let should = true;
                 if (name.length) {
@@ -83,7 +83,7 @@
     );
 </script>
 
-<div class="bestiary-container">
+<div class="library-container">
     <div
         class="filters-container"
         style="background-color: {backgroundColor}; top: -{paddingTop};"
@@ -107,7 +107,7 @@
 </div>
 
 <style scoped>
-    .bestiary-container {
+    .library-container {
         display: flex;
         flex-flow: column;
         gap: 1rem;

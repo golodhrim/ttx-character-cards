@@ -1,16 +1,16 @@
 <script lang="ts">
-    import type { Monster } from "index";
+    import type { Participant } from "index";
     import type { SubHeadingItem } from "src/layouts/layout.types";
     import { stringify } from "../../util/util";
     import TextContent from "./TextContent.svelte";
 
-    export let monster: Monster;
+    export let participant: Participant;
     export let item: SubHeadingItem;
     const subheading: string[] = [];
 
     for (let property of item.properties) {
-        if (property in monster) {
-            subheading.push(`${stringify(monster[property], 0, ", ", false)}`);
+        if (property in participant) {
+            subheading.push(`${stringify(participant[property], 0, ", ", false)}`);
         }
     }
 </script>

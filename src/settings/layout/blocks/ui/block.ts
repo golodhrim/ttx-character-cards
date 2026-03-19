@@ -33,7 +33,7 @@ import SubheadingProperty from "./SubheadingProperty.svelte";
 import IfElseConditions from "./IfElseConditions.svelte";
 import { editorFromTextArea, nanoid } from "src/util/util";
 import { EditorView } from "@codemirror/view";
-import type { Monster } from "index";
+import type { Participant } from "index";
 import { CommandSuggester, IconSuggester } from "../../../suggester";
 import FantasyStatblockModal from "src/modal/modal";
 
@@ -268,7 +268,7 @@ class JavaScriptModal extends BlockModal<JavaScriptItem> {
                         text: "JavaScript blocks can be used to do highly advanced HTML elements. The JavaScript code will be provided the "
                     });
                     e.createEl("code", {
-                        text: "monster"
+                        text: "participant"
                     });
                     e.createSpan({ text: " and " });
                     e.createEl("code", {
@@ -479,7 +479,7 @@ class ActionModal extends EditorEnabledModal<ActionItem> {
                     e.createSpan({
                         text: "The callback will receive the "
                     });
-                    e.createEl("code", { text: "monster" });
+                    e.createEl("code", { text: "participant" });
                     e.createSpan({
                         text: " parameter. "
                     });
@@ -538,7 +538,7 @@ class BasicModal<I extends BasicItem> extends EditorEnabledModal<I> {
                         e.createSpan({
                             text: "The callback will receive the "
                         });
-                        e.createEl("code", { text: "monster" });
+                        e.createEl("code", { text: "participant" });
                         e.createSpan({ text: " and " });
                         e.createEl("code", { text: "property" });
                         e.createSpan({
@@ -564,8 +564,8 @@ interface DiceCallbackObject {
                         MarkdownRenderer.render(
                             this.plugin.app,
                             `\`\`\`ts
-const diceText = monster.stats[5] + "d20 + 2";
-return ["The monster guesses you have: ", { text: diceText }, " freckles."];
+const diceText = participant.stats[5] + "d20 + 2";
+return ["The participant guesses you have: ", { text: diceText }, " freckles."];
 \`\`\``,
                             e.createDiv(),
                             "",
@@ -655,7 +655,7 @@ return ["The monster guesses you have: ", { text: diceText }, " freckles."];
                     )
                     .addText((t) => {
                         t.setValue(`${block.diceProperty}`).onChange((v) => {
-                            block.diceProperty = v as keyof Monster;
+                            block.diceProperty = v as keyof Participant;
                         });
                     });
             }
@@ -721,12 +721,12 @@ class PropertyModal extends MarkdownEnabledModal<PropertyItem> {
                     e.createSpan({
                         text: "The callback will receive the "
                     });
-                    e.createEl("code", { text: "monster" });
+                    e.createEl("code", { text: "participant" });
                     e.createSpan({
                         text: " parameter. The callback should return a string. For example: "
                     });
 
-                    e.createEl("code", { text: "return monster.name" });
+                    e.createEl("code", { text: "return participant.name" });
                     e.createEl("br");
                     e.createEl("strong", {
                         text: "Please Note: This will not run if a dice callback is provided."
@@ -791,7 +791,7 @@ class SavesModal extends MarkdownEnabledModal<SavesItem> {
                     e.createSpan({
                         text: "The callback will receive the "
                     });
-                    e.createEl("code", { text: "monster" });
+                    e.createEl("code", { text: "participant" });
                     e.createSpan({ text: " and " });
                     e.createEl("code", { text: "property" });
                     e.createSpan({
@@ -908,7 +908,7 @@ class TableModal extends BasicModal<TableItem> {
                     e.createSpan({ text: "Variables " });
                     e.createEl("code", { text: "stat" });
                     e.createSpan({ text: " and " });
-                    e.createEl("code", { text: "monster" });
+                    e.createEl("code", { text: "participant" });
                     e.createSpan({
                         text: "are accessible, use these to calculate the modifier."
                     });
@@ -1009,9 +1009,9 @@ class TraitsModal extends MarkdownEnabledModal<TraitsItem> {
                     e.createSpan({
                         text: "Text entered here will appear directly after the section heading, before the actual traits. Use "
                     });
-                    e.createEl("code", { text: "{{monster}}" });
+                    e.createEl("code", { text: "{{participant}}" });
                     e.createSpan({
-                        text: " to insert the current monster's name."
+                        text: " to insert the current participant's name."
                     });
                 })
             );
@@ -1035,14 +1035,14 @@ class TraitsModal extends MarkdownEnabledModal<TraitsItem> {
                     e.createSpan({
                         text: "The callback will receive the "
                     });
-                    e.createEl("code", { text: "monster" });
+                    e.createEl("code", { text: "participant" });
                     e.createSpan({ text: " and " });
                     e.createEl("code", { text: "property" });
                     e.createSpan({
                         text: " parameters. The callback should return a string. For example: "
                     });
 
-                    e.createEl("code", { text: "return monster.name" });
+                    e.createEl("code", { text: "return participant.name" });
                     e.createEl("br");
                     e.createEl("strong", {
                         text: "Please Note: This will not run if a dice callback is provided."

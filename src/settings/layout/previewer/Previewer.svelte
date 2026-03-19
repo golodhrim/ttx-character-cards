@@ -9,8 +9,8 @@
         parseYaml,
         stringifyYaml
     } from "obsidian";
-    import { MonsterSuggestionModal } from "src/util/participant";
-    import type { Monster } from "index";
+    import { ParticipantSuggestionModal } from "src/util/participant";
+    import type { Participant } from "index";
     import { buildTextArea, setNodeIcon } from "src/util";
     import type { EditorView } from "@codemirror/view";
     import StatBlockRenderer from "src/view/statblock";
@@ -24,24 +24,24 @@
     const layout = getContext("layout");
     const dispatch = createEventDispatcher<{ update: string }>();
 
-    const preview = (container: HTMLElement, monster: Monster) => {
+    const preview = (container: HTMLElement, participant: Participant) => {
         container.empty();
-        renderer.setCreature({ monster });
+        renderer.setCreature({ participant });
         renderer.init();
     };
     let previewContainer: HTMLDivElement, renderer: StatBlockRenderer;
 
     onMount(() => {
-        let monster: Monster = {} as Monster;
+        let participant: Participant = {} as Participant;
         try {
-            monster = { ...monster, ...parseYaml(previewed) };
+            participant = { ...participant, ...parseYaml(previewed) };
         } catch (e) {}
         renderer = new StatBlockRenderer(
             {
                 plugin,
                 container: previewContainer,
                 layout: $layout,
-                monster
+                participant
             },
             false
         );
@@ -50,7 +50,7 @@
         const search = new SearchComponent(node).setPlaceholder(
             "Find a participant"
         );
-        const suggester = new MonsterSuggestionModal(
+        const suggester = new ParticipantSuggestionModal(
             plugin.app,
             search,
             plugin.api.getBestiaryCreatures()
@@ -81,7 +81,7 @@
             [],
             debounce((v) => {
                 try {
-                    const creature = parseYaml(v) as Monster;
+                    const creature = parseYaml(v) as Participant;
                     dispatch("update", v);
                     preview(previewContainer, creature);
                 } catch (e) {}

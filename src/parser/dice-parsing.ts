@@ -1,11 +1,11 @@
 import type { DiceParsing, Layout, ParsedDice } from "src/layouts/layout.types";
 import { nanoid } from "../util/util";
-import type { Monster } from "index";
+import type { Participant } from "index";
 
 export function parseForDice(
     layout: Layout,
     property: string,
-    monster: Monster
+    participant: Participant
 ): ParsedDice[] {
     const regexes: Map<string, RegExp> = new Map();
     const parsers: Map<string, Function> = new Map();
@@ -13,13 +13,13 @@ export function parseForDice(
     for (const entry of diceParsing) {
         regexes.set(entry.id, new RegExp(entry.regex));
         let scoped = `
-let anon = (original, matches, monster) => {
+let anon = (original, matches, participant) => {
     if (!matches || !matches.length) return original;
     ${entry.parser};
 }
 let result;
 try {
-    result = anon(original, matches, monster);
+    result = anon(original, matches, participant);
 } catch(e) {
     console.error(e);
     result = original;
@@ -27,7 +27,7 @@ try {
     return result;
 }
         `;
-        const func = new Function("original", "matches", "monster", scoped);
+        const func = new Function("original", "matches", "participant", scoped);
         parsers.set(entry.id, func);
     }
 
@@ -57,7 +57,7 @@ try {
         const regex = regexes.get(id)!;
         const parser = parsers.get(id)!;
         const matches = prop.match(regex);
-        const res = parser.call(undefined, prop, matches, monster);
+        const res = parser.call(undefined, prop, matches, participant);
 
         if (
             !res ||

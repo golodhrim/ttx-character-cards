@@ -3,9 +3,9 @@
     import { createEventDispatcher } from "svelte";
     import { dndzone, SOURCES, TRIGGERS } from "svelte-dnd-action";
     import { setNodeIcon } from "src/util";
-    import type { Monster } from "index";
+    import type { Participant } from "index";
 
-    type PropItem = { prop: keyof Monster; id: string };
+    type PropItem = { prop: keyof Participant; id: string };
     export let properties: PropItem[] = [];
 
     const dispatch = createEventDispatcher();

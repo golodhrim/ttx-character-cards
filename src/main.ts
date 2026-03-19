@@ -11,7 +11,7 @@ import domtoimage from "dom-to-image";
 
 import StatBlockRenderer from "./view/statblock";
 import { nanoid } from "./util/util";
-import type { Monster, StatblockParameters } from "../index";
+import type { Participant, StatblockParameters } from "../index";
 import StatblockSettingTab from "./settings/settings";
 import fastCopy from "fast-copy";
 
@@ -29,13 +29,13 @@ import LayoutManager from "./layouts/manager";
 import { CHARACTER_VIEWER, CharacterViewer } from "./character-viewer";
 import { API } from "./api/api";
 import { Linkifier } from "./parser/linkify";
-import { Bestiary } from "./library/library";
+import { Library } from "./library/library";
 import { ExpectedValue } from "@javalent/dice-roller";
 
 export const DICE_ROLLER_SOURCE = "FANTASY_STATBLOCKS_PLUGIN";
 
 const DEFAULT_DATA: StatblockData = {
-    monsters: [],
+    participants: [],
     defaultLayouts: {},
     layouts: [],
     default: LayoutTTXPlayerCard.name,
@@ -119,8 +119,8 @@ export default class StatBlockPlugin extends Plugin {
     #creaturePaneProtocolHandler: ObsidianProtocolHandler = (data) => {
         const name = data?.creature ?? data?.name ?? "";
 
-        if (Bestiary.hasCreature(name)) {
-            const creature = Bestiary.get(name);
+        if (Library.hasCreature(name)) {
+            const creature = Library.get(name);
             if (!this.creature_view) {
                 this.openCharacterViewer().then((v) => v.render(creature));
             } else {
@@ -138,7 +138,7 @@ export default class StatBlockPlugin extends Plugin {
         this.manager.initialize(this.settings);
         this.register(() => this.manager.unload());
 
-        Bestiary.initialize(this);
+        Library.initialize(this);
         Linkifier.initialize(this.app.metadataCache, this.app);
 
         this.register(() => Linkifier.unload());
@@ -334,48 +334,48 @@ export default class StatBlockPlugin extends Plugin {
         /* } */
     }
 
-    async saveMonster(monster: Monster, save: boolean = true) {
-        if (!monster.name) return;
-        if (Bestiary.isLocal(monster.name)) {
+    async saveParticipant(participant: Participant, save: boolean = true) {
+        if (!participant.name) return;
+        if (Library.isLocal(participant.name)) {
             //already exists, replace it
-            const index = this.settings.monsters.findIndex(
-                ([name]) => name === monster.name
+            const index = this.settings.participants.findIndex(
+                ([name]) => name === participant.name
             );
             if (index >= 0) {
-                this.settings.monsters.splice(index, 1, [
-                    monster.name,
-                    monster
+                this.settings.participants.splice(index, 1, [
+                    participant.name,
+                    participant
                 ]);
             } else {
-                this.settings.monsters.push([monster.name, monster]);
+                this.settings.participants.push([participant.name, participant]);
             }
         } else {
-            this.settings.monsters.push([monster.name, monster]);
+            this.settings.participants.push([participant.name, participant]);
         }
-        Bestiary.addLocalCreature(monster);
+        Library.addLocalCreature(participant);
 
         if (save) {
             await this.saveSettings();
         }
     }
-    async saveMonsters(monsters: Monster[]) {
-        for (let monster of monsters) {
-            await this.saveMonster(monster, false);
+    async saveParticipants(participants: Participant[]) {
+        for (let participant of participants) {
+            await this.saveParticipant(participant, false);
         }
         await this.saveSettings();
     }
 
-    async updateMonster(oldMonster: Monster, newMonster: Monster) {
-        await this.deleteMonsters(oldMonster.name);
-        await this.saveMonster(newMonster);
+    async updateParticipant(oldParticipant: Participant, newParticipant: Participant) {
+        await this.deleteParticipants(oldParticipant.name);
+        await this.saveParticipant(newParticipant);
     }
 
-    async deleteMonsters(...monsters: string[]) {
-        for (let monster of monsters) {
-            Bestiary.removeLocalCreature(monster);
+    async deleteParticipants(...participants: string[]) {
+        for (let participant of participants) {
+            Library.removeLocalCreature(participant);
         }
-        this.settings.monsters = this.settings.monsters.filter(
-            ([name]) => !monsters.includes(name)
+        this.settings.participants = this.settings.participants.filter(
+            ([name]) => !participants.includes(name)
         );
         await this.saveSettings();
     }
@@ -423,8 +423,8 @@ export default class StatBlockPlugin extends Plugin {
         return this.manager.getDefaultLayout();
     }
 
-    getLayoutOrDefault(monster: Monster): Layout {
-        return this.manager.getLayoutOrDefault(monster.layout);
+    getLayoutOrDefault(participant: Participant): Layout {
+        return this.manager.getLayoutOrDefault(participant.layout);
     }
 
     async postprocessor(

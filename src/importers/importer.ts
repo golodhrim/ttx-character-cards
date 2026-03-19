@@ -1,6 +1,6 @@
 //@ts-ignore
 import ImportWorker from "./importer.worker";
-import type { Monster } from "index";
+import type { Participant } from "index";
 import { App, Notice, Setting } from "obsidian";
 import type StatBlockPlugin from "src/main";
 import { nanoid } from "src/util/util";
@@ -13,7 +13,7 @@ class SourcePromptModal extends FantasyStatblockModal {
         this.titleEl.createSpan({ text: "Set Sources" });
         new Setting(this.contentEl)
             .setName(
-                "A source could not be found for some imported monsters. Do you wish to manually add one?"
+                "A source could not be found for some imported participants. Do you wish to manually add one?"
             )
             .addText((t) => {
                 t.setPlaceholder("Unknown").onChange((v) => {
@@ -62,23 +62,23 @@ const getSourceFromPrompt = async (app: StatBlockPlugin): Promise<string> => {
 export default class Importer {
     constructor(public plugin: StatBlockPlugin) {}
     workers: Map<string, Worker> = new Map();
-    async import(files: FileList, source: string): Promise<Monster[]> {
+    async import(files: FileList, source: string): Promise<Participant[]> {
         return new Promise((resolve) => {
             const worker = new ImportWorker();
             const id = nanoid();
             this.workers.set(id, worker);
             //@ts-ignore
             worker.onmessage = async (event) => {
-                const { monsters }: { monsters: Monster[] } = event.data ?? {
-                    monsters: []
+                const { participants }: { participants: Participant[] } = event.data ?? {
+                    participants: []
                 };
-                if (monsters) {
+                if (participants) {
                     new Notice(
-                        `Successfully imported ${monsters.length} Monsters`
+                        `Successfully imported ${participants.length} participants`
                     );
-                    const sourceless = monsters.filter(
-                        (monster) =>
-                            monster.source == "Unknown" || !monster.source
+                    const sourceless = participants.filter(
+                        (participant) =>
+                            participant.source == "Unknown" || !participant.source
                     );
                     let source: string;
                     if (
@@ -86,13 +86,13 @@ export default class Importer {
                         (source = await getSourceFromPrompt(this.plugin))
                     ) {
                         sourceless.forEach(
-                            (monster) => (monster.source = source)
+                            (participant) => (participant.source = source)
                         );
                     }
                 }
                 worker.terminate();
                 this.workers.delete(id);
-                resolve(monsters);
+                resolve(participants);
             }; //@ts-ignore
             worker.onerror = (e) => {
                 new Notice(

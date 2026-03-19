@@ -1,4 +1,4 @@
-import type { Monster } from "index";
+import type { Participant } from "index";
 import {
     ItemView,
     type WorkspaceLeaf,
@@ -6,9 +6,9 @@ import {
     ExtraButtonComponent,
     SearchComponent
 } from "obsidian";
-import { Bestiary } from "src/library/library";
+import { Library } from "src/library/library";
 import type StatBlockPlugin from "src/main";
-import { MonsterSuggestionModal } from "src/util/participant";
+import { ParticipantSuggestionModal } from "src/util/participant";
 
 export const CHARACTER_VIEWER = "ttx-character-cards-viewer";
 
@@ -48,13 +48,13 @@ export class CharacterViewer extends ItemView {
         const search = new SearchComponent(this.topEl).setPlaceholder(
             "Find a participant"
         );
-        const suggester = new MonsterSuggestionModal(
+        const suggester = new ParticipantSuggestionModal(
             this.plugin.app,
             search,
-            Bestiary.getBestiaryCreatures()
+            Library.getLibraryParticipants()
         );
-        Bestiary.onResolved(() => {
-            suggester.items = Bestiary.getBestiaryCreatures();
+        Library.onResolved(() => {
+            suggester.items = Library.getLibraryParticipants();
         });
         suggester.onSelect(async (v) => {
             if (v) {
@@ -71,7 +71,7 @@ export class CharacterViewer extends ItemView {
             });
     }
 
-    async render(participant?: Partial<Monster>) {
+    async render(participant?: Partial<Participant>) {
         this.statblockEl.empty();
         if (!participant) {
             this.statblockEl.createEl("em", {

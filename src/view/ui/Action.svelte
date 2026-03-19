@@ -4,14 +4,14 @@
     import type { ActionItem } from "src/layouts/layout.types";
 
     export let block: ActionItem;
-    export let monster: Monster;
+    export let participant: Participant;
 
     const createButton = (node: HTMLElement) => {
         new ExtraButtonComponent(node).setIcon(block.icon).onClick(() => {
             if (block.callback?.trim()?.length) {
                 try {
-                    const func = new Function("monster", block.callback);
-                    func.call(undefined, monster);
+                    const func = new Function("participant", block.callback);
+                    func.call(undefined, participant);
                 } catch (e) {
                     new Notice(
                         `There was an error executing the provided callback for the action block.\n\n${e.message}`

@@ -9,7 +9,7 @@ import {
 } from "obsidian";
 import { LayoutTTXPlayerCard } from "src/layouts/ttx/ttx-player-card";
 import { MarkdownRenderChild } from "obsidian";
-import type { Monster, StatblockParameters, Trait } from "../../index";
+import type { Participant, StatblockParameters, Trait } from "../../index";
 
 import Statblock from "./Statblock.svelte";
 import type StatBlockPlugin from "src/main";
@@ -27,7 +27,7 @@ import type {
 } from "src/layouts/layout.types";
 import { append } from "src/util/util";
 import { Linkifier } from "src/parser/linkify";
-import { Bestiary } from "src/library/library";
+import { Library } from "src/library/library";
 import copy from "fast-copy";
 
 type RendererParameters = {
@@ -37,7 +37,7 @@ type RendererParameters = {
     layout?: Layout;
 } & (
     | {
-          monster: Monster;
+          participant: Participant;
       }
     | {
           params: Partial<StatblockParameters>;
@@ -51,7 +51,7 @@ export default class StatBlockRenderer extends MarkdownRenderChild {
     statblockEl!: HTMLDivElement;
     contentEl!: HTMLDivElement;
     container: HTMLElement;
-    monster!: Monster;
+    participant!: Participant;
     plugin: StatBlockPlugin;
     params!: Partial<StatblockParameters>;
     context: string;
@@ -80,9 +80,9 @@ export default class StatBlockRenderer extends MarkdownRenderChild {
                 .find(
                     (layout) =>
                         layout.name ==
-                            (this.params.layout ?? this.monster.layout) ||
+                            (this.params.layout ?? this.participant.layout) ||
                         layout.name ==
-                            (this.params.statblock ?? this.monster.statblock)
+                            (this.params.statblock ?? this.participant.statblock)
                 ) ??
             this.plugin.manager.getDefaultLayout();
     }
@@ -90,10 +90,10 @@ export default class StatBlockRenderer extends MarkdownRenderChild {
         return "name" in this.params;
     }
 
-    async build(): Promise<Monster> {
-        let built: Partial<Monster> = Object.assign(
+    async build(): Promise<Participant> {
+        let built: Partial<Participant> = Object.assign(
             {},
-            this.monster ?? {},
+            this.participant ?? {},
             this.params ?? {}
         );
 
@@ -134,7 +134,7 @@ export default class StatBlockRenderer extends MarkdownRenderChild {
             }
         }
 
-        const extensions = Bestiary.getExtensions(built, new Set());
+        const extensions = Library.getExtensions(built, new Set());
         /**
          * At this point, the built creature has been fully resolved from all
          * extensions and in-memory creature definitions.
@@ -142,7 +142,7 @@ export default class StatBlockRenderer extends MarkdownRenderChild {
         for (const extension of extensions.reverse()) {
             built = Object.assign(built, extension);
         }
-        built = Object.assign(built, this.monster ?? {}, this.params ?? {});
+        built = Object.assign(built, this.participant ?? {}, this.params ?? {});
 
         /**
          * Traits logic:
@@ -202,7 +202,7 @@ export default class StatBlockRenderer extends MarkdownRenderChild {
                              * Deleted traits. These are always removed.
                              */
                             for (const trait of getTraitsList(
-                                `${property}-` as keyof Monster,
+                                `${property}-` as keyof Participant,
                                 creature
                             )) {
                                 $TRAIT_MAP.delete(trait.name);
@@ -214,7 +214,7 @@ export default class StatBlockRenderer extends MarkdownRenderChild {
                              */
 
                             for (const trait of getTraitsList(
-                                `${property}~` as keyof Monster,
+                                `${property}~` as keyof Participant,
                                 creature
                             )) {
                                 if ($TRAIT_MAP.has(trait.name)) {
@@ -226,7 +226,7 @@ export default class StatBlockRenderer extends MarkdownRenderChild {
                              * Additive traits. These traits are always shown.
                              */
                             for (const trait of getTraitsList(
-                                `${property}+` as keyof Monster,
+                                `${property}+` as keyof Participant,
                                 creature
                             )) {
                                 $ADDITIVE_TRAITS.push(trait);
@@ -268,9 +268,9 @@ export default class StatBlockRenderer extends MarkdownRenderChild {
                         if (
                             `${property}+` in built &&
                             !Array.isArray(
-                                built[`${property}+` as keyof Monster]
+                                built[`${property}+` as keyof Participant]
                             ) &&
-                            typeof built[`${property}+` as keyof Monster] ==
+                            typeof built[`${property}+` as keyof Participant] ==
                                 "object"
                         ) {
                             additive = Object.entries(
@@ -293,7 +293,7 @@ export default class StatBlockRenderer extends MarkdownRenderChild {
                         if (`${property}+` in built && property in built) {
                             const additive = append(
                                 built[property] as string | any[],
-                                built[`${property}+` as keyof Monster] as
+                                built[`${property}+` as keyof Participant] as
                                     | string
                                     | any[]
                             );
@@ -314,7 +314,7 @@ export default class StatBlockRenderer extends MarkdownRenderChild {
             built.image = built.image.flat(2).join("");
         }
 
-        return built as Monster;
+        return built as Participant;
     }
 
     /**
@@ -365,7 +365,7 @@ export default class StatBlockRenderer extends MarkdownRenderChild {
     setCreature(
         params:
             | {
-                  monster: Monster;
+                  participant: Participant;
               }
             | {
                   params: Partial<StatblockParameters>;
@@ -373,26 +373,26 @@ export default class StatBlockRenderer extends MarkdownRenderChild {
     ) {
         if ("params" in params) {
             this.params = params.params;
-            this.monster = Object.assign(
+            this.participant = Object.assign(
                 {},
-                Bestiary.get(this.params.monster) ??
-                    Bestiary.get(this.params.creature)
+                Library.get(this.params.participant) ??
+                    Library.get(this.params.creature)
             );
         } else {
             this.params = {};
-            this.monster = params.monster;
+            this.participant = params.participant;
         }
     }
 
     $ui!: Statblock;
     async init() {
         this.containerEl.empty();
-        this.monster = (await this.build()) as Monster;
+        this.participant = (await this.build()) as Participant;
         this.$ui = new Statblock({
             target: this.containerEl,
             props: {
                 context: this.context,
-                monster: this.monster,
+                participant: this.participant,
                 statblock: this.layout.blocks,
                 layout: this.layout,
                 plugin: this.plugin,
@@ -403,29 +403,29 @@ export default class StatBlockRenderer extends MarkdownRenderChild {
         });
         this.$ui.$on("save", async () => {
             if (
-                Bestiary.hasCreature(this.monster.name) &&
+                Library.hasCreature(this.participant.name) &&
                 !(await confirmWithModal(
                     this.plugin.app,
-                    "This will overwrite an existing monster in settings. Are you sure?"
+                    "This will overwrite an existing participant in settings. Are you sure?"
                 ))
             )
                 return;
-            this.plugin.saveMonster({
-                ...fastCopy(this.monster),
-                source: this.monster.source ?? "Homebrew",
+            this.plugin.saveParticipant({
+                ...fastCopy(this.participant),
+                source: this.participant.source ?? "Homebrew",
                 layout: this.layout.name
-            } as Monster);
+            } as Participant);
         });
 
         this.$ui.$on("export", () => {
             this.plugin.exportAsPng(
-                this.monster.name,
+                this.participant.name,
                 this.containerEl.firstElementChild!
             );
         });
 
-        let extensionNames = Bestiary.getExtensionNames(
-            this.monster,
+        let extensionNames = Library.getExtensionNames(
+            this.participant,
             new Set()
         );
         this.plugin.registerEvent(
@@ -433,18 +433,18 @@ export default class StatBlockRenderer extends MarkdownRenderChild {
                 "fantasy-statblocks:bestiary:creature-added",
                 async (creature) => {
                     if (extensionNames.includes(creature.name)) {
-                        this.monster = copy(creature);
-                        this.monster = await this.build();
-                        this.$ui.$set({ monster: this.monster });
+                        this.participant = copy(creature);
+                        this.participant = await this.build();
+                        this.$ui.$set({ participant: this.participant });
                     }
                 }
             )
         );
     }
-    transformLinks(monster: Partial<Monster>): Partial<Monster> {
+    transformLinks(participant: Partial<Participant>): Partial<Participant> {
         const built = parseYaml(
             Linkifier.transformYamlSource(
-                stringifyYaml(monster).replace(/\\#/g, "#")
+                stringifyYaml(participant).replace(/\\#/g, "#")
             )
         );
         return built;
@@ -507,8 +507,8 @@ export class ConfirmModal extends Modal {
 }
 
 function getTraitsList(
-    property: keyof Monster,
-    obj: Partial<Monster>
+    property: keyof Participant,
+    obj: Partial<Participant>
 ): Trait[] {
     const traitArray: Trait[] = [];
     if (property in obj && Array.isArray(obj[property])) {

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Monster } from "index";
+    import type { Participant } from "index";
     import {
         debounce,
         ExtraButtonComponent,
@@ -25,7 +25,7 @@
 
     const dispatch = createEventDispatcher();
 
-    export let monster: Partial<Monster>;
+    export let participant: Partial<Participant>;
     export let context: string;
     export let plugin: StatBlockPlugin;
     export let statblock: StatblockItem[];
@@ -34,16 +34,16 @@
     export let canSave: boolean = true;
     export let icons = true;
 
-    const monsterStore = writable(monster);
-    $: $monsterStore = monster;
+    const participantStore = writable(participant);
+    $: $participantStore = participant;
     const maxColumns =
-        !isNaN(Number(monster.columns ?? layout.columns)) &&
-        Number(monster.columns ?? layout.columns) > 0
-            ? Number(monster.columns ?? layout.columns)
+        !isNaN(Number(participant.columns ?? layout.columns)) &&
+        Number(participant.columns ?? layout.columns) > 0
+            ? Number(participant.columns ?? layout.columns)
             : 2;
 
     const monsterColumnWidth = Number(
-        `${monster.columnWidth}`.replace(/\D/g, "")
+        `${participant.columnWidth}`.replace(/\D/g, "")
     );
     const columnWidth =
         !isNaN(monsterColumnWidth ?? layout.columnWidth) &&
@@ -52,13 +52,13 @@
             : 400;
 
     const canDice =
-        plugin.canUseDiceRoller && (monster.dice ?? plugin.settings.useDice);
-    const canRender = monster.render ?? plugin.settings.renderDice;
+        plugin.canUseDiceRoller && (participant.dice ?? plugin.settings.useDice);
+    const canRender = participant.render ?? plugin.settings.renderDice;
 
     setContext<StatBlockPlugin>("plugin", plugin);
     setContext<boolean>("tryToRenderLinks", plugin.settings.tryToRenderLinks);
     setContext<string>("context", context);
-    setContext<Writable<Partial<Monster>>>("monster", monsterStore);
+    setContext<Writable<Partial<Participant>>>("participant", participantStore);
     setContext<boolean>("dice", canDice);
     setContext<boolean>("render", canRender);
     setContext<StatBlockRenderer>("renderer", renderer);
@@ -72,7 +72,7 @@
     $: ready = false;
 
     const setColumns = () => {
-        if (monster.forceColumns ?? layout.forceColumns) {
+        if (participant.forceColumns ?? layout.forceColumns) {
             columns = maxColumns;
             observer.disconnect();
             return;
@@ -118,7 +118,7 @@
             .setIcon("code")
             .onClick(async () => {
                 try {
-                    await navigator.clipboard.writeText(stringifyYaml(monster));
+                    await navigator.clipboard.writeText(stringifyYaml(participant));
                     new Notice("Participant YAML copied to clipboard");
                 } catch (e: unknown) {
                     new Notice(
@@ -148,7 +148,7 @@
     };
 
 
-    $: name = slugifyLayoutForCss(monster.name ?? "", "no-name");
+    $: name = slugifyLayoutForCss(participant.name ?? "", "no-name");
     $: layoutName = slugifyLayoutForCss(layout.name, "no-layout");
     const getNestedLayouts = (blocks: StatblockItem[]): string[] => {
         const classes: string[] = [];
@@ -180,8 +180,8 @@
             class:statblock={true}
             class={classes.join(" ")}
         >
-            {#key $monsterStore}
-                {#if $monsterStore}
+            {#key $participantStore}
+                {#if $participantStore}
                     <Bar />
                     {#key columns}
                         <ColumnContainer
@@ -198,7 +198,7 @@
                     {/key}
                     <Bar />
                 {:else}
-                    <span>Invalid monster.</span>
+                    <span>Invalid participant.</span>
                 {/if}
             {/key}
         </div>

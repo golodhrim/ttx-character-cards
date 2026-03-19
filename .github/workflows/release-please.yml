@@ -24,15 +24,16 @@ jobs:
                   mkdir ttx-character-cards
                   cp main.js manifest.json styles.css ttx-character-cards
                   zip -r ttx-character-cards.zip ttx-character-cards
-            - name: Upload release assets
+            - name: Create release and upload assets
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   TAG_NAME: ${{ github.ref_name }}
               run: |
-                  gh release upload "$TAG_NAME" \
+                  gh release create "$TAG_NAME" \
                     main.js \
                     manifest.json \
                     styles.css \
                     ttx-character-cards.zip \
                     --repo "$GITHUB_REPOSITORY" \
-                    --clobber
+                    --title "$TAG_NAME" \
+                    --generate-notes

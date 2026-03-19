@@ -21,7 +21,7 @@ import type {
     Layout,
     StatblockItem
 } from "./layouts/layout.types";
-import { Layout5e } from "./layouts/basic 5e/basic5e";
+import { LayoutTTXPlayerCard } from "./layouts/ttx/ttx-player-card";
 import { StatblockSuggester } from "./suggest";
 import { DefaultLayouts } from "./layouts";
 import type { StatblockData } from "index";
@@ -38,7 +38,7 @@ const DEFAULT_DATA: StatblockData = {
     monsters: [],
     defaultLayouts: {},
     layouts: [],
-    default: Layout5e.name,
+    default: LayoutTTXPlayerCard.name,
     useDice: true,
     renderDice: false,
     export: true,
@@ -252,7 +252,7 @@ export default class StatBlockPlugin extends Plugin {
             this.settings.default = (
                 this.layouts.find(
                     ({ name }) => name == this.settings.default
-                ) ?? Layout5e
+                ) ?? LayoutTTXPlayerCard
             ).id;
 
             this.settings.defaultLayoutsIntegrated = true;

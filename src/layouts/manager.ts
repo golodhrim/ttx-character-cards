@@ -4,7 +4,7 @@ import type {
     Layout,
     StatblockItem
 } from "src/layouts/layout.types";
-import { Layout5e } from "./basic 5e/basic5e";
+import { LayoutTTXPlayerCard } from "./ttx/ttx-player-card";
 import type { StatblockData } from "index";
 import {
     DefaultLayoutCSSProperties,
@@ -145,7 +145,7 @@ export default class LayoutManager {
     }
     public getDefaultLayout() {
         return (
-            this.getAllLayouts()?.find((l) => l.id == this.#default) ?? Layout5e
+            this.getAllLayouts()?.find((l) => l.id == this.#default) ?? LayoutTTXPlayerCard
         );
     }
     #layouts: Map<string, Layout> = new Map();

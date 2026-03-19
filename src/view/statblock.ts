@@ -7,7 +7,7 @@ import {
     parseYaml,
     stringifyYaml
 } from "obsidian";
-import { Layout5e } from "src/layouts/basic 5e/basic5e";
+import { LayoutTTXPlayerCard } from "src/layouts/ttx/ttx-player-card";
 import { MarkdownRenderChild } from "obsidian";
 import type { Monster, StatblockParameters, Trait } from "../../index";
 

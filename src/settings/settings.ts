@@ -19,7 +19,7 @@ import { FolderInputSuggest } from "@javalent/utilities";
 import type { Monster } from "index";
 import Importer from "src/importers/importer";
 import { DefaultLayouts } from "src/layouts";
-import { Layout5e } from "src/layouts/basic 5e/basic5e";
+import { LayoutTTXPlayerCard } from "src/layouts/ttx/ttx-player-card";
 import type { DefaultLayout, Layout } from "src/layouts/layout.types";
 import { DICE_ROLLER_SOURCE } from "src/main";
 import FantasyStatblockModal from "src/modal/modal";
@@ -477,11 +477,11 @@ export default class StatblockSettingTab extends PluginSettingTab {
                         .getAllLayouts()
                         .find(({ id }) => id == this.plugin.settings.default)
                 ) {
-                    this.plugin.settings.default = Layout5e.id;
+                    this.plugin.settings.default = LayoutTTXPlayerCard.id;
                     await this.plugin.saveSettings();
                 }
 
-                d.setValue(this.plugin.settings.default ?? Layout5e.id);
+                d.setValue(this.plugin.settings.default ?? LayoutTTXPlayerCard.id);
 
                 d.onChange(async (v) => {
                     this.plugin.settings.default = v;

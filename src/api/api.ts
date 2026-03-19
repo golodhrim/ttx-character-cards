@@ -9,7 +9,7 @@ import StatBlockRenderer from "src/view/statblock";
 
 declare global {
     interface Window {
-        FantasyStatblocks: API;
+        TTXCharacterCards: API;
     }
 }
 
@@ -73,26 +73,27 @@ export class API {
      * @param {string} name
      * @returns {boolean}
      */
-    hasCreature(name: string): boolean {
+    hasParticipant(name: string): boolean {
         return Library.hasCreature(name);
     }
 
     /**
      * Retrieve a fully defined participant out of the library, resolving all extensions.
      *
-     * @param {string} name Name of the creautre to retrieve.
+     * @param {string} name Name of the participant to retrieve.
      * @returns {Partial<Participant> | null} The participant from the library, or null if not present.
      */
-    getCreatureFromBestiary(name: string): Partial<Participant> | null {
+    getParticipantFromLibrary(name: string): Partial<Participant> | null {
         return Library.getCreatureFromBestiarySync(name);
     }
+
     /**
      * Retrieve a fully defined participant out of the library, resolving all extensions.
      *
-     * @param {string} name Name of the creautre to retrieve.
+     * @param {string} name Name of the participant to retrieve.
      * @returns {Partial<Participant> | null} The participant from the library, or null if not present.
      */
-    async getCreature(name: string): Promise<Partial<Participant> | null> {
+    async getParticipant(name: string): Promise<Partial<Participant> | null> {
         return await Library.getCreatureFromBestiary(name);
     }
 
@@ -187,7 +188,7 @@ export class API {
             HomebrewCreature
         >(
             {},
-            fastCopy(this.getCreatureFromBestiary(creature.name ?? "") ?? {}),
+            fastCopy(this.getParticipantFromLibrary(creature.name ?? "") ?? {}),
             //@ts-ignore
             fastCopy(creature)
         ) as Participant;

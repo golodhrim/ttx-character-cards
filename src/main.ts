@@ -201,8 +201,8 @@ export default class StatBlockPlugin extends Plugin {
 
         this.addSettingTab(new StatblockSettingTab(this.app, this));
 
-        (window["FantasyStatblocks"] = this.api) &&
-            this.register(() => delete window["FantasyStatblocks"]);
+        (window["TTXCharacterCards"] = this.api) &&
+            this.register(() => delete window["TTXCharacterCards"]);
 
         this.registerMarkdownCodeBlockProcessor(
             "statblock",

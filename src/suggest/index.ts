@@ -47,7 +47,7 @@ export class StatblockSuggester extends EditorSuggest<string> {
                 break;
             }
             case SuggestContext.Creature: {
-                suggestions = this.plugin.api.getBestiaryNames();
+                suggestions = this.plugin.api.getLibraryNames();
                 break;
             }
             case SuggestContext.Layout: {
@@ -212,7 +212,7 @@ export class StatblockSuggester extends EditorSuggest<string> {
             const [_, param, query] = match;
 
             if (
-                Library.getBestiaryNames().find(
+                Library.getLibraryNames().find(
                     (p) => p.toLowerCase() == query.toLowerCase()
                 )
             ) {

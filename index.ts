@@ -97,6 +97,6 @@ export interface StatblockData {
 
 declare global {
     interface Window {
-        FantasyStatblocks: API;
+        TTXCharacterCards: API;
     }
 }

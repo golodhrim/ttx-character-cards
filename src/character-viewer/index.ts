@@ -10,17 +10,18 @@ import { Bestiary } from "src/bestiary/bestiary";
 import type StatBlockPlugin from "src/main";
 import { MonsterSuggestionModal } from "src/util/creature";
 
-export const CREATURE_VIEW = "fantasy-statblocks-creature-pane";
+export const CHARACTER_VIEWER = "ttx-character-cards-viewer";
 
-export class CreatureView extends ItemView {
-    topEl = this.contentEl.createDiv("creature-view-top-pane");
-    statblockEl = this.contentEl.createDiv("creature-statblock-container");
+export class CharacterViewer extends ItemView {
+    topEl = this.contentEl.createDiv("character-viewer-top-pane");
+    statblockEl = this.contentEl.createDiv("character-statblock-container");
+
     constructor(leaf: WorkspaceLeaf, public plugin: StatBlockPlugin) {
         super(leaf);
         this.load();
         this.containerEl.addClasses([
-            "fantasy-statblocks",
-            "creature-view-container"
+            "ttx-character-cards",
+            "character-viewer-container"
         ]);
         this.containerEl.on(
             "mouseover",
@@ -38,13 +39,14 @@ export class CreatureView extends ItemView {
         this.containerEl.on("click", "a.internal-link", (ev) =>
             this.app.workspace.openLinkText(
                 (ev.target as HTMLAnchorElement).dataset.href,
-                "fantasy-statblocks"
+                "ttx-character-cards"
             )
         );
     }
+
     onload() {
         const search = new SearchComponent(this.topEl).setPlaceholder(
-            "Find a creature"
+            "Find a participant"
         );
         const suggester = new MonsterSuggestionModal(
             this.plugin.app,
@@ -62,31 +64,34 @@ export class CreatureView extends ItemView {
         });
         new ExtraButtonComponent(this.topEl)
             .setIcon("cross")
-            .setTooltip("Close Statblock")
+            .setTooltip("Close Card")
             .onClick(async () => {
                 await this.render();
                 search.setValue("");
             });
     }
-    async render(creature?: Partial<Monster>) {
+
+    async render(participant?: Partial<Monster>) {
         this.statblockEl.empty();
-        if (!creature) {
+        if (!participant) {
             this.statblockEl.createEl("em", {
-                text: "Select a creature to view it here."
+                text: "Select a participant to view their card."
             });
             return;
         }
-        const statblock = this.plugin.api.render(creature, this.statblockEl);
+        const statblock = this.plugin.api.render(participant, this.statblockEl);
         this.addChild(statblock);
     }
 
     getDisplayText(): string {
-        return "Combatant";
+        return "Character Viewer";
     }
+
     getIcon(): string {
-        return "skull";
+        return "user";
     }
+
     getViewType(): string {
-        return CREATURE_VIEW;
+        return CHARACTER_VIEWER;
     }
 }

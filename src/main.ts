@@ -26,7 +26,7 @@ import { StatblockSuggester } from "./suggest";
 import { DefaultLayouts } from "./layouts";
 import type { StatblockData } from "index";
 import LayoutManager from "./layouts/manager";
-import { CREATURE_VIEW, CreatureView } from "./combatant";
+import { CHARACTER_VIEWER, CharacterViewer } from "./character-viewer";
 import { API } from "./api/api";
 import { Linkifier } from "./parser/linkify";
 import { Bestiary } from "./bestiary/bestiary";
@@ -88,14 +88,14 @@ export default class StatBlockPlugin extends Plugin {
     }
 
     get creature_view() {
-        const leaves = this.app.workspace.getLeavesOfType(CREATURE_VIEW);
+        const leaves = this.app.workspace.getLeavesOfType(CHARACTER_VIEWER);
         const leaf = leaves?.length ? leaves[0] : null;
-        if (leaf && leaf.view && leaf.view instanceof CreatureView)
+        if (leaf && leaf.view && leaf.view instanceof CharacterViewer)
             return leaf.view;
     }
-    async openCreatureView(newPane: boolean = false) {
+    async openCharacterViewer(newPane: boolean = false) {
         let leaf: WorkspaceLeaf;
-        const existing = this.app.workspace.getLeavesOfType(CREATURE_VIEW);
+        const existing = this.app.workspace.getLeavesOfType(CHARACTER_VIEWER);
 
         if (!newPane && existing?.length) {
             leaf = existing.shift();
@@ -109,11 +109,11 @@ export default class StatBlockPlugin extends Plugin {
                 leaf = this.app.workspace.getRightLeaf(true);
             }
             await leaf.setViewState({
-                type: CREATURE_VIEW
+                type: CHARACTER_VIEWER
             });
         }
         this.app.workspace.revealLeaf(leaf);
-        return leaf.view as CreatureView;
+        return leaf.view as CharacterViewer;
     }
 
     #creaturePaneProtocolHandler: ObsidianProtocolHandler = (data) => {
@@ -122,7 +122,7 @@ export default class StatBlockPlugin extends Plugin {
         if (Bestiary.hasCreature(name)) {
             const creature = Bestiary.get(name);
             if (!this.creature_view) {
-                this.openCreatureView().then((v) => v.render(creature));
+                this.openCharacterViewer().then((v) => v.render(creature));
             } else {
                 this.creature_view.render(creature);
             }
@@ -153,10 +153,10 @@ export default class StatBlockPlugin extends Plugin {
             name: "Open Creature pane",
             checkCallback: (checking) => {
                 const existing =
-                    this.app.workspace.getLeavesOfType(CREATURE_VIEW);
+                    this.app.workspace.getLeavesOfType(CHARACTER_VIEWER);
                 if (!existing.length) {
                     if (!checking) {
-                        this.openCreatureView();
+                        this.openCharacterViewer();
                     }
                     return true;
                 }
@@ -168,10 +168,10 @@ export default class StatBlockPlugin extends Plugin {
             name: "Reveal Creature pane",
             checkCallback: (checking) => {
                 const existing =
-                    this.app.workspace.getLeavesOfType(CREATURE_VIEW);
+                    this.app.workspace.getLeavesOfType(CHARACTER_VIEWER);
                 if (existing.length) {
                     if (!checking) {
-                        this.openCreatureView();
+                        this.openCharacterViewer();
                     }
                     return true;
                 }
@@ -182,11 +182,11 @@ export default class StatBlockPlugin extends Plugin {
             id: "open-new-creature-view",
             name: "Open new Creature pane",
             callback: () => {
-                this.openCreatureView(true);
+                this.openCharacterViewer(true);
             }
         });
         this.addRibbonIcon("skull", "Open Creature pane", async (evt) => {
-            this.openCreatureView(evt.getModifierState("Meta"));
+            this.openCharacterViewer(evt.getModifierState("Meta"));
         });
 
         this.registerObsidianProtocolHandler(
@@ -212,8 +212,8 @@ export default class StatBlockPlugin extends Plugin {
         this.registerEditorSuggest(new StatblockSuggester(this));
 
         this.registerView(
-            CREATURE_VIEW,
-            (leaf: WorkspaceLeaf) => new CreatureView(leaf, this)
+            CHARACTER_VIEWER,
+            (leaf: WorkspaceLeaf) => new CharacterViewer(leaf, this)
         );
         if (this.canUseDiceRoller) {
             window.DiceRoller.registerSource(DICE_ROLLER_SOURCE, {
@@ -384,7 +384,7 @@ export default class StatBlockPlugin extends Plugin {
         console.log("Fantasy StatBlocks unloaded");
 
         this.app.workspace
-            .getLeavesOfType(CREATURE_VIEW)
+            .getLeavesOfType(CHARACTER_VIEWER)
             .forEach((leaf) => leaf.detach());
     }
 

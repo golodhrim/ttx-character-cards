@@ -34,6 +34,7 @@ const params = {
     external: [
         "obsidian",
         "electron",
+        "@wooorm/starry-night",
         "codemirror",
         "@codemirror/autocomplete",
         "@codemirror/closebrackets",

@@ -149,8 +149,8 @@ export default class StatBlockPlugin extends Plugin {
         });
 
         this.addCommand({
-            id: "open-creature-view",
-            name: "Open Creature pane",
+            id: "open-character-viewer",
+            name: "Open Character Viewer",
             checkCallback: (checking) => {
                 const existing =
                     this.app.workspace.getLeavesOfType(CHARACTER_VIEWER);
@@ -164,8 +164,8 @@ export default class StatBlockPlugin extends Plugin {
             }
         });
         this.addCommand({
-            id: "reveal-creature-view",
-            name: "Reveal Creature pane",
+            id: "reveal-character-viewer",
+            name: "Reveal Character Viewer",
             checkCallback: (checking) => {
                 const existing =
                     this.app.workspace.getLeavesOfType(CHARACTER_VIEWER);
@@ -179,13 +179,13 @@ export default class StatBlockPlugin extends Plugin {
             }
         });
         this.addCommand({
-            id: "open-new-creature-view",
-            name: "Open new Creature pane",
+            id: "open-new-character-viewer",
+            name: "Open new Character Viewer",
             callback: () => {
                 this.openCharacterViewer(true);
             }
         });
-        this.addRibbonIcon("skull", "Open Creature pane", async (evt) => {
+        this.addRibbonIcon("user", "Open Character Viewer", async (evt) => {
             this.openCharacterViewer(evt.getModifierState("Meta"));
         });
 

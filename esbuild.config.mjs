@@ -72,7 +72,7 @@ const params = {
     plugins: [
         sassPlugin(),
         sveltePlugin({
-            compilerOptions: { css: true },
+            compilerOptions: { css: 'injected' },
             preprocess: sveltePreprocess(),
             filterWarnings: (warning) => {
                 return false;

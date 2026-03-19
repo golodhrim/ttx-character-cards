@@ -1,113 +1,45 @@
 import type { API } from "src/api/api";
 import type { DefaultLayout, Layout } from "src/layouts/layout.types";
 
-export type ability =
-    | "strength"
-    | "dexterity"
-    | "constitution"
-    | "intelligence"
-    | "wisdom"
-    | "charisma";
-export type fage_ability =
-    | "accuracy"
-    | "communication"
-    | "constitution"
-    | "dexterity"
-    | "fighting"
-    | "intelligence"
-    | "perception"
-    | "strength"
-    | "willpower";
-
-export type AbilitySkill = { [key: string]: number }
-export type TraitAbilitySkill = Trait | AbilitySkill;
-
 export interface Participant {
-    image?: string;
+    /** Required */
     name: string;
-    size: string;
-    type: string;
-    subtype: string;
-    alignment: string;
-    ac: string | number;
-    hp: number;
-    hit_dice?: string;
-    speed: string;
-    stats: [number, number, number, number, number, number];
-    fage_stats?: [
-        number,
-        number,
-        number,
-        number,
-        number,
-        number,
-        number,
-        number,
-        number
-    ];
-    saves?: AbilitySkill | TraitAbilitySkill[];
-    skillsaves?: AbilitySkill | TraitAbilitySkill[];
-    damage_vulnerabilities: string;
-    damage_resistances: string;
-    damage_immunities: string;
-    condition_immunities: string;
-    senses: string;
-    languages: string;
-    cr: string | number;
-    traits?: Trait[];
-    spells?: Spell[];
-    actions?: Trait[];
-    bonus_actions?: Trait[];
-    legendary_actions?: Trait[];
-    legendary_description?: string;
-    mythic_actions?: Trait[];
-    mythic_description?: string;
-    reactions?: Trait[];
-    lair_actions?: Trait[];
+
+    /** TTX Player Card fields */
+    roles?: string;
+    speciality?: string;
+    modifier?: string;
+    bonus?: string;
+    delegation?: string;
+    strengths?: string;
+    special?: string;
+    crm_role?: string;
+
+    /** TTX Scenario fields */
+    attack_vector?: string;
+    difficulty?: string;
+    trigger?: string;
+    attacker_goal?: string;
+    phase1?: string;
+    phase2?: string;
+    phase3?: string;
+    crm_focus?: string;
+    hidden_complication?: string;
+
+    /** Plugin internals */
+    image?: string;
     source?: string | string[];
-    spellsNotes?: string;
-    "statblock-link"?: string;
-
-    /** Fate Core */
-    description?: string;
-    aspects?: string;
-    temporaryAspects?: string;
-    stress?: number[];
-    consequences?: Trait[];
-    skills?: Trait[];
-    stunts?: Trait[];
-    items?: Trait[];
-    extras?: Trait[];
-
-    /** 13th Age */
-    flavor_text?: string;
-    initiative?: number;
-    vulnerability?: string;
-    mook?: boolean;
-    triggered_actions?: Trait[];
-    nastier_traits?: Trait[];
-
-    /** Statblock Parameters */
-    export?: boolean;
-    dice?: boolean;
-    render?: boolean;
     layout?: string;
-    statblock?: string;
+    note?: string;
+    path?: string;
+    mtime?: number;
+    library?: boolean;
+    extends?: string | string[];
+    export?: boolean;
     columns?: number;
     columnWidth?: number;
     columnHeight?: number;
     forceColumns?: boolean;
-
-    note?: string;
-    path?: string;
-    mtime?: number;
-
-    /* Extensions */
-
-    monster?: string;
-    creature?: string;
-    extends?: string | string[];
-    bestiary: boolean;
 
     [key: string]: any;
 }

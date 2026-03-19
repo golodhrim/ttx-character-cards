@@ -299,7 +299,7 @@ class WatcherClass extends Component {
         let files = [];
         if (folder instanceof TFolder) {
             for (const child of folder.children) {
-                files.push(child.path);
+                files.push(...this.getFiles(child));
             }
         }
         if (folder instanceof TFile && folder.extension === "md") {

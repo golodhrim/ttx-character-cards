@@ -1,10 +1,10 @@
 {
     "id": "ttx-character-cards",
     "name": "TTX Character Cards",
-    "version": "1.0.0",
-    "minAppVersion": "0.15.0",
+    "version": "1.0.1",
+    "minAppVersion": "1.12.4",
     "author": "Martin Scholz (golodhrim)",
-    "description": "Character card stat blocks for TTX participants and scenarios. Fork of javalent/fantasy-statblocks.",
+    "description": "Character card stat blocks for TTX participants and scenarios. Renders participant profiles with role modifiers, bonuses, delegation rules, and special abilities.",
     "authorUrl": "https://gitlab.com/golodhrim",
     "isDesktopOnly": false
 }

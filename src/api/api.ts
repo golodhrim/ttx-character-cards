@@ -2,7 +2,7 @@ import fastCopy from "fast-copy";
 import type { Monster } from "index";
 import { Component, MarkdownRenderer } from "obsidian";
 import type { HomebrewCreature } from "obsidian-overload";
-import { Bestiary } from "src/bestiary/bestiary";
+import { Bestiary } from "src/library/library";
 import type StatBlockPlugin from "src/main";
 import { LinkStringifier } from "src/parser/stringifier";
 import StatBlockRenderer from "src/view/statblock";

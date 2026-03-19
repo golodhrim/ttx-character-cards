@@ -2,7 +2,7 @@ import fastCopy from "fast-copy";
 import type { Monster } from "index";
 import type StatBlockPlugin from "src/main";
 import { Watcher } from "src/watcher/watcher";
-import { BESTIARY_BY_NAME } from "./srd-bestiary";
+import { BESTIARY_BY_NAME } from "./srd-library";
 import { stringify } from "src/util/util";
 import type { EventRef, Events, Workspace } from "obsidian";
 

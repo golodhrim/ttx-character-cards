@@ -29,7 +29,7 @@ import LayoutManager from "./layouts/manager";
 import { CHARACTER_VIEWER, CharacterViewer } from "./character-viewer";
 import { API } from "./api/api";
 import { Linkifier } from "./parser/linkify";
-import { Bestiary } from "./bestiary/bestiary";
+import { Bestiary } from "./library/library";
 import { ExpectedValue } from "@javalent/dice-roller";
 
 export const DICE_ROLLER_SOURCE = "FANTASY_STATBLOCKS_PLUGIN";

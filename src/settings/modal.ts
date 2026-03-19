@@ -2,7 +2,7 @@ import type { Monster } from "index";
 import { Modal, Notice, Platform } from "obsidian";
 import type StatBlockPlugin from "src/main";
 
-import EditMonsterApp from "./EditMonster.svelte";
+import EditMonsterApp from "./EditParticipant.svelte";
 import StatBlockRenderer from "src/view/statblock";
 import FantasyStatblockModal from "src/modal/modal";
 

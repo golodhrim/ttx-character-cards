@@ -3,7 +3,7 @@
     import { stringify } from "src/util/util";
     import { EditMonsterModal, ViewMonsterModal } from "../modal";
     import type { Monster } from "index";
-    import { Bestiary } from "src/bestiary/bestiary";
+    import { Bestiary } from "src/library/library";
     import { getContext } from "../layout/context";
     import { NameFilter } from "./filters/filters";
     import { createEventDispatcher } from "svelte";

@@ -9,7 +9,7 @@
         parseYaml,
         stringifyYaml
     } from "obsidian";
-    import { MonsterSuggestionModal } from "src/util/creature";
+    import { MonsterSuggestionModal } from "src/util/participant";
     import type { Monster } from "index";
     import { buildTextArea, setNodeIcon } from "src/util";
     import type { EditorView } from "@codemirror/view";

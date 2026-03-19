@@ -25,14 +25,14 @@ import { DICE_ROLLER_SOURCE } from "src/main";
 import FantasyStatblockModal from "src/modal/modal";
 import { nanoid } from "src/util/util";
 import { Watcher } from "src/watcher/watcher";
-import Creatures from "./creatures/Creatures.svelte";
+import Participants from "./participants/Participants.svelte";
 import { EditMonsterModal } from "./modal";
 
 export default class StatblockSettingTab extends PluginSettingTab {
     importer: Importer;
     results: Partial<Monster>[] = [];
     filter!: Setting;
-    $UI!: Creatures;
+    $UI!: Participants;
     constructor(app: App, private plugin: StatBlockPlugin) {
         super(app, plugin);
         this.importer = new Importer(this.plugin);
@@ -60,10 +60,10 @@ export default class StatblockSettingTab extends PluginSettingTab {
 
             const div = containerEl.createDiv("coffee");
             div.createEl("a", {
-                href: "https://www.buymeacoffee.com/valentine195"
+                href: "https://www.buymeacoffee.com/golodhrim"
             }).createEl("img", {
                 attr: {
-                    src: "https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=valentine195&button_colour=e3e7ef&font_colour=262626&font_family=Inter&outline_colour=262626&coffee_colour=ff0000"
+                    src: "https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=golodhrim&button_colour=e3e7ef&font_colour=262626&font_family=Inter&outline_colour=262626&coffee_colour=ff0000"
                 }
             });
         } catch (e) {
@@ -806,7 +806,7 @@ export default class StatblockSettingTab extends PluginSettingTab {
         const ancestor = this.containerEl.closest(".statblock-settings")!;
         const { backgroundColor, paddingTop } = getComputedStyle(ancestor);
 
-        this.$UI = new Creatures({
+        this.$UI = new Participants({
             target: additionalContainer,
             props: {
                 plugin: this.plugin,

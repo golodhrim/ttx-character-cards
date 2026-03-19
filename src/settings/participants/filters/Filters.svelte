@@ -5,7 +5,7 @@
     import { ActiveFilters, NameFilter, SourcesFilter } from "./filters";
     import { slide } from "svelte/transition";
     import { linear } from "svelte/easing";
-    import { Bestiary } from "src/bestiary/bestiary";
+    import { Bestiary } from "src/library/library";
     import { writable } from "svelte/store";
     import { createEventDispatcher } from "svelte";
 

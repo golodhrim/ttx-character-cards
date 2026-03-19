@@ -1,5 +1,5 @@
 import { Monster, Trait } from "index";
-import { ONE_ACTION, getACStats, addSign, getModifierToDiceRoll, toTitleCase } from "./pf2eMonsterToolImport";
+import { ONE_ACTION, getACStats, addSign, getModifierToDiceRoll, toTitleCase } from "./pf2eParticipantToolImport";
 import { Abilities, Proficiencies, PathbuilderCharacter, Weapon, Armor, Build, FocusTradition } from "./Pathbuilder.d";
 
 const skillAbilityMap: Record<string, keyof Abilities> = {

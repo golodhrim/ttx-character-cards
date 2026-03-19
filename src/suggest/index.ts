@@ -9,7 +9,7 @@ import {
 } from "obsidian";
 import type StatBlockPlugin from "src/main";
 import type { CommonProps } from "src/layouts/layout.types";
-import { Bestiary } from "src/bestiary/bestiary";
+import { Bestiary } from "src/library/library";
 enum SuggestContext {
     Layout,
     Creature,

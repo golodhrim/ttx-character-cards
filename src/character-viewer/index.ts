@@ -6,9 +6,9 @@ import {
     ExtraButtonComponent,
     SearchComponent
 } from "obsidian";
-import { Bestiary } from "src/bestiary/bestiary";
+import { Bestiary } from "src/library/library";
 import type StatBlockPlugin from "src/main";
-import { MonsterSuggestionModal } from "src/util/creature";
+import { MonsterSuggestionModal } from "src/util/participant";
 
 export const CHARACTER_VIEWER = "ttx-character-cards-viewer";
 

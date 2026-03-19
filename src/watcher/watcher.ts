@@ -18,7 +18,7 @@ import FSWorker, {
     SaveMessage,
     DebugMessage
 } from "./watcher.worker";
-import { Bestiary } from "src/bestiary/bestiary";
+import { Bestiary } from "src/library/library";
 
 declare global {
     interface Worker {

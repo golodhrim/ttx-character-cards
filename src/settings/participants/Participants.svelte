@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { Bestiary } from "src/bestiary/bestiary";
+    import { Bestiary } from "src/library/library";
     import Pagination from "./Pagination.svelte";
-    import Creature from "./Creature.svelte";
+    import Participant from "./Participant.svelte";
     import type StatBlockPlugin from "src/main";
     import { setContext } from "../layout/context";
     import Filters from "./filters/Filters.svelte";
@@ -98,7 +98,7 @@
     </div>
     <div class="creatures-container">
         {#each $sliced as item (item.name)}
-            <Creature {item} on:close />
+            <Participant {item} on:close />
         {/each}
     </div>
     <div class="pagination-container">

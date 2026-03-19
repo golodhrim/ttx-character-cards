@@ -44,7 +44,7 @@ export const LayoutTTXScenario: DefaultLayout = {
             type: "property",
             id: nanoid(),
             properties: ["trigger"],
-            label: "Trigger (share with players)",
+            display: "Trigger (share with players)",
             conditioned: true,
             markdown: true,
             hasRule: false
@@ -53,7 +53,7 @@ export const LayoutTTXScenario: DefaultLayout = {
             type: "property",
             id: nanoid(),
             properties: ["attacker_goal"],
-            label: "Attacker Goal",
+            display: "Attacker Goal",
             conditioned: true,
             markdown: true,
             hasRule: true
@@ -62,7 +62,7 @@ export const LayoutTTXScenario: DefaultLayout = {
             type: "property",
             id: nanoid(),
             properties: ["phase1"],
-            label: "Phase 1 — Discovery",
+            display: "Phase 1 — Discovery",
             conditioned: true,
             markdown: true,
             hasRule: false
@@ -71,7 +71,7 @@ export const LayoutTTXScenario: DefaultLayout = {
             type: "property",
             id: nanoid(),
             properties: ["phase2"],
-            label: "Phase 2 — Containment",
+            display: "Phase 2 — Containment",
             conditioned: true,
             markdown: true,
             hasRule: false
@@ -80,7 +80,7 @@ export const LayoutTTXScenario: DefaultLayout = {
             type: "property",
             id: nanoid(),
             properties: ["phase3"],
-            label: "Phase 3 — Recovery",
+            display: "Phase 3 — Recovery",
             conditioned: true,
             markdown: true,
             hasRule: true
@@ -89,7 +89,7 @@ export const LayoutTTXScenario: DefaultLayout = {
             type: "property",
             id: nanoid(),
             properties: ["crm_focus"],
-            label: "CRM Focus",
+            display: "CRM Focus",
             conditioned: true,
             markdown: true,
             hasRule: false
@@ -98,7 +98,7 @@ export const LayoutTTXScenario: DefaultLayout = {
             type: "property",
             id: nanoid(),
             properties: ["hidden_complication"],
-            label: "Hidden Complication (SGM only)",
+            display: "Hidden Complication (SGM only)",
             conditioned: true,
             markdown: true,
             hasRule: false

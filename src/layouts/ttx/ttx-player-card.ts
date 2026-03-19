@@ -39,7 +39,7 @@ export const LayoutTTXPlayerCard: DefaultLayout = {
             type: "property",
             id: nanoid(),
             properties: ["speciality"],
-            label: "Speciality",
+            display: "Speciality",
             conditioned: true,
             markdown: true,
             hasRule: false
@@ -48,7 +48,7 @@ export const LayoutTTXPlayerCard: DefaultLayout = {
             type: "property",
             id: nanoid(),
             properties: ["modifier"],
-            label: "Roll Modifier",
+            display: "Roll Modifier",
             conditioned: true,
             hasRule: false
         },
@@ -56,7 +56,7 @@ export const LayoutTTXPlayerCard: DefaultLayout = {
             type: "property",
             id: nanoid(),
             properties: ["bonus"],
-            label: "Bonus",
+            display: "Bonus",
             conditioned: true,
             markdown: true,
             hasRule: false
@@ -65,7 +65,7 @@ export const LayoutTTXPlayerCard: DefaultLayout = {
             type: "property",
             id: nanoid(),
             properties: ["delegation"],
-            label: "Delegation",
+            display: "Delegation",
             conditioned: true,
             hasRule: false
         },
@@ -73,7 +73,7 @@ export const LayoutTTXPlayerCard: DefaultLayout = {
             type: "property",
             id: nanoid(),
             properties: ["strengths"],
-            label: "Strengths",
+            display: "Strengths",
             conditioned: true,
             markdown: true,
             hasRule: false
@@ -82,7 +82,7 @@ export const LayoutTTXPlayerCard: DefaultLayout = {
             type: "property",
             id: nanoid(),
             properties: ["special"],
-            label: "Special",
+            display: "Special",
             conditioned: true,
             markdown: true,
             hasRule: true
@@ -91,7 +91,7 @@ export const LayoutTTXPlayerCard: DefaultLayout = {
             type: "property",
             id: nanoid(),
             properties: ["crm_role"],
-            label: "CRM Role (SGM)",
+            display: "CRM Role (SGM)",
             conditioned: true,
             markdown: true,
             hasRule: false

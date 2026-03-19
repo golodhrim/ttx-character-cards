@@ -1,7 +1,7 @@
 {
     "id": "ttx-character-cards",
     "name": "TTX Character Cards",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "minAppVersion": "1.12.4",
     "author": "Martin Scholz (golodhrim)",
     "description": "Character card stat blocks for TTX participants and scenarios. Renders participant profiles with role modifiers, bonuses, delegation rules, and special abilities.",

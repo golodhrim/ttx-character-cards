@@ -1,5 +1,5 @@
 {
-    "name": "@javalent/fantasy-statblocks",
+    "name": "@golodhrim/ttx-character-cards",
     "version": "4.10.3",
     "description": "Create Fantasy statblocks in Obsidian.md",
     "scripts": {
